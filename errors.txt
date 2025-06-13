@@ -1,0 +1,12 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+The label investigation_loop is defined twice, at File "game/scripts/custom_screens.rpy", line 145:
+label investigation_loop:
+and File "game/scripts/script.rpy", line 17:
+    label investigation_loop:
+
+
+Ren'Py Version: Ren'Py 8.3.7.25031702
+Fri Jun 13 00:12:24 2025
