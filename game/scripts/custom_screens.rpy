@@ -2,12 +2,6 @@
 # #This file contains all custom screens used in the game.
 # # 
 
-label go_to_scene():
-    n "We're at the crime scene now."
-    scene room
-    show screen crimescene
-    return
-
 screen crimescene():
     zorder 1
     # modal True
@@ -170,38 +164,12 @@ label click_drawer_flowers:
 screen outside_room():
     zorder 0
 
-    # add "backgrounds/outside_room.png"
-
     imagebutton:
-        idle "images/objects/door.png"
-        hover "images/objects/hover/door.png"
-        xpos 750
-        ypos 125
-        action [Hide("outside_room"), Jump("investigation_loop")]
-
-label investigation_loop:
-    if inspected_objects.issuperset(ALL_OBJECTS):
-        jump finish_investigation
-
-    call screen crimescene  
-    $ result = _return
-
-    if result == "knife":
-        call click_knife
-    elif result == "canvas":
-        call click_canvas
-    elif result == "laptop":
-        call click_laptop
-    elif result == "letters":
-        call click_letters
-    elif result == "stool_blood":
-        call click_stool_blood
-    elif result == "table":
-        call click_table
-    elif result == "drawer_flowers":
-        call click_drawer_flowers
-
-    jump investigation_loop
+            idle "images/objects/door.png"
+            hover "images/objects/hover/door.png"
+            xpos 750
+            ypos 125
+            action [Hide("outside_room"), Jump("investigation_loop")]
 
 screen inspect_canvas():
     imagemap:

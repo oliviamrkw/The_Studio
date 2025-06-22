@@ -2,11 +2,9 @@
 errors listed below, and try again.
 
 
-The label investigation_loop is defined twice, at File "game/scripts/custom_screens.rpy", line 145:
-label investigation_loop:
-and File "game/scripts/script.rpy", line 17:
-    label investigation_loop:
-
+File "game/scripts/script.rpy", line 94: invalid syntax
+    image nina normal = "images/characters/nina_normal.png"
+           ^
 
 Ren'Py Version: Ren'Py 8.3.7.25031702
-Fri Jun 13 00:12:24 2025
+Sat Jun 21 15:27:39 2025

@@ -1,43 +1,35 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/scripts/script.rpy", line 7, in script
-    n "Good evening, investigator. We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment. His neighbours claim to have heard a heated argument at around 6pm with a woman, and went to check up on him later at 10pm, only to find him dead. There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit. We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene. You may enter whenever you’re ready."
-  File "renpy/common/000window.rpy", line 132, in _window_auto_callback
-    _window_show(auto=True)
-  File "renpy/common/000window.rpy", line 75, in _window_show
-    renpy.with_statement(trans)
-  File "game/scripts/custom_screens.rpy", line 86, in execute
+  File "game/scripts/script.rpy", line 148, in script
+    $ renpy.pause(hard=True)
+  File "game/scripts/script.rpy", line 148, in <module>
+    $ renpy.pause(hard=True)
+  File "game/scripts/custom_screens.rpy", line 164, in execute
     screen outside_room():
-  File "game/scripts/custom_screens.rpy", line 86, in execute
+  File "game/scripts/custom_screens.rpy", line 164, in execute
     screen outside_room():
-  File "game/scripts/custom_screens.rpy", line 90, in execute
-    imagebutton:
-  File "game/scripts/custom_screens.rpy", line 90, in keywords
-    imagebutton:
-  File "game/scripts/custom_screens.rpy", line 95, in <module>
-    action Jump(crimescene)
-NameError: name 'crimescene' is not defined
+  File "game/scripts/custom_screens.rpy", line 167, in execute
+    if door_enabled:
+  File "game/scripts/custom_screens.rpy", line 167, in <module>
+    if door_enabled:
+NameError: name 'door_enabled' is not defined
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/scripts/script.rpy", line 7, in script
-    n "Good evening, investigator. We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment. His neighbours claim to have heard a heated argument at around 6pm with a woman, and went to check up on him later at 10pm, only to find him dead. There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit. We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene. You may enter whenever you’re ready."
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 2586, in execute
-    Say.execute(self)
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 591, in execute
-    statement_name(stmt_name)
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 58, in statement_name
-    i(name)
-  File "renpy/common/000window.rpy", line 132, in _window_auto_callback
-    _window_show(auto=True)
-  File "renpy/common/000window.rpy", line 75, in _window_show
-    renpy.with_statement(trans)
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\exports\statementexports.py", line 257, in with_statement
-    return renpy.game.interface.do_with(trans, paired, clear=clear)
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\core.py", line 1581, in do_with
-    return self.interact(trans_pause=True,
+  File "game/scripts/script.rpy", line 148, in script
+    $ renpy.pause(hard=True)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 834, in execute
+    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1187, in py_exec_bytecode
+    exec(bytecode, globals, locals)
+  File "game/scripts/script.rpy", line 148, in <module>
+    $ renpy.pause(hard=True)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\exports\statementexports.py", line 194, in pause
+    rv = renpy.ui.interact(mouse='pause', type='pause', roll_forward=roll_forward, pause=delay, pause_modal=modal)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ui.py", line 301, in interact
+    rv = renpy.game.interface.interact(roll_forward=roll_forward, **kwargs)
   File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\core.py", line 2218, in interact
     repeat, rv = self.interact_core(preloads=preloads, trans_pause=trans_pause, pause=pause, pause_start=pause_start, pause_modal=pause_modal, **kwargs) # type: ignore
   File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\core.py", line 2748, in interact_core
@@ -48,7 +40,6 @@ Full traceback:
     d.visit_all(callback, seen)
   File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\displayable.py", line 434, in visit_all
     d.visit_all(callback, seen)
-  [Previous line repeated 1 more time]
   File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\screen.py", line 480, in visit_all
     callback(self)
   File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\core.py", line 2748, in <lambda>
@@ -57,19 +48,17 @@ Full traceback:
     self.update()
   File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\screen.py", line 700, in update
     self.screen.function(**self.scope)
-  File "game/scripts/custom_screens.rpy", line 86, in execute
+  File "game/scripts/custom_screens.rpy", line 164, in execute
     screen outside_room():
-  File "game/scripts/custom_screens.rpy", line 86, in execute
+  File "game/scripts/custom_screens.rpy", line 164, in execute
     screen outside_room():
-  File "game/scripts/custom_screens.rpy", line 90, in execute
-    imagebutton:
-  File "game/scripts/custom_screens.rpy", line 90, in keywords
-    imagebutton:
-  File "game/scripts/custom_screens.rpy", line 95, in <module>
-    action Jump(crimescene)
-NameError: name 'crimescene' is not defined
+  File "game/scripts/custom_screens.rpy", line 167, in execute
+    if door_enabled:
+  File "game/scripts/custom_screens.rpy", line 167, in <module>
+    if door_enabled:
+NameError: name 'door_enabled' is not defined
 
 Windows-10-10.0.19045 AMD64
 Ren'Py 8.3.7.25031702
 The Studio 1.0
-Thu Jun 12 21:18:33 2025
+Sat Jun 21 15:23:35 2025
