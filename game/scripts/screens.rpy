@@ -81,137 +81,6 @@ style frame:
 ## In-game screens
 ################################################################################
 
-# screen paris_interactive():
-
-#     imagemap:
-#         ground "paris.png" 
-#         hover "paris.png"
-
-#     imagebutton:
-#         idle (Animation("baguette.png", 0.5, "baguette_select.png", 0.5) if not baguette_clicked else "baguette.png")
-#         hover "baguette_hover.png"
-#         xalign 0.2
-#         yalign 0.2
-#         action [SetVariable("baguette_clicked", True), Show("baguette_video_popup")]
-
-#     imagebutton:
-#         idle (Animation("france.png", 0.5, "france_select.png", 0.5) if not france_clicked else "france.png")
-#         hover "france_hover.png"
-#         xalign 0.8
-#         yalign 0.2
-#         action [SetVariable("france_clicked", True), Show("france_text_popup")]
-
-# screen baguette_video_popup():
-
-#     frame:
-#         style "popup_frame"
-
-#         vbox:
-#             hbox:
-#                 xalign 1.0
-#                 textbutton "Close":
-#                     action Hide("baguette_video_popup")
-#                     text_size 20
-#                     text_color "#ffffff"
-#                     background "#000000"
-
-#             add Movie(size=(600, 400), play="images/baguette_video.webm")
-
-#             text "A person preparing a baguette.":
-#                 size 20
-#                 color "#ffffff"
-
-# screen france_text_popup():
-
-#     frame:
-#         style "popup_frame"
-
-#         vbox:
-#             hbox:
-#                 xalign 1.0
-#                 textbutton "Close":
-#                     action Hide("france_text_popup")
-#                     text_size 20
-#                     text_color "#ffffff"
-#                     background "#000000"
-
-#             text "They speak French in Paris. Bonjour":
-#                 size 30
-#                 color "#ffffff"
-#                 xalign 0.5
-#                 text_align 0.5
-
-# screen zelda_interactive():
-
-#     imagemap:
-#         ground "paris.png" 
-#         hover "paris.png"
-
-#     imagebutton:
-#         idle "zelda.png"
-#         hover "zelda_hover.png"
-#         xalign 0.5
-#         yalign 0.2
-#         action [SetVariable("zelda_clicked", True), Show("zelda_video_popup")]
-
-# screen zelda_video_popup():
-
-#     frame:
-#         style "popup_frame"
-
-#         vbox:
-#             hbox:
-#                 xalign 1.0
-#                 textbutton "Close":
-#                     action Hide("zelda_video_popup")
-#                     text_size 20
-#                     text_color "#ffffff"
-#                     background "#000000"
-
-#             add Movie(size=(800, 600), play="images/zelda_video.webm")
-    
-# style popup_frame is default:
-#     background "#000000ff"
-#     xalign 0.5
-#     yalign 0.4
-
-# screen pet_zelda():
-#     add "zelda.png" xpos 0.8 ypos 0.5 anchor (0.5, 0.5)
-#     draggroup:
-#         drag:
-#             drag_name "hand"
-#             xpos 0.1 ypos 0.1
-#             child "hand.png"
-#             draggable True
-#             # droppable True
-#             dragged handle_zelda_interaction
-
-#         drag:
-#             drag_name "brush"
-#             xpos 0.1 ypos 0.3
-#             child "brush.png"
-#             draggable True
-#             # droppable True
-#             dragged handle_zelda_interaction
-
-#         drag:
-#             drag_name "food"
-#             xpos 0.1 ypos 0.5
-#             child "food.png"
-#             draggable True
-#             # droppable True
-#             dragged handle_zelda_interaction
-
-#         drag:
-#             drag_name "zelda"
-#             draggable False
-#             # droppable True
-#             # dropped [handle_zelda_interaction]
-#             xpos 0.8 ypos 0.5 anchor (0.5, 0.5)
-#             child Solid("#00000000", xsize=300, ysize=300)
-
-
-
 ## Say screen ##################################################################
 ##
 ## The say screen is used to display dialogue to the player. It takes two
@@ -226,27 +95,30 @@ style frame:
 ## https://www.renpy.org/doc/html/screen_special.html#say
 
 screen say(who, what):
+    style_prefix "say"
+
+    if who == "Nina":
+        add "nina_dialogue" at Transform(xzoom=0.55, yzoom=0.49, xalign=0.5, yalign=0.9999)
+    elif who is None and what:
+        add "no_who_dialogue_box" at Transform(xzoom=0.62, yzoom=0.4, xalign=0.5, yalign=0.99)
 
     window:
-        id "window"
-
-        if who is not None:
-            window:
-                id "namebox"
-                style "namebox"
-
-        text what id "what":
-            xpos 0.27
-            ypos 0.15
-            xsize 825
-            color "#000000"
-
+        background None
+        
+        if who is None:
+            text what id "what":
+                xpos 0.2
+                xsize 1000
+        else:
+            text what id "what":
+                xpos 0.33
+                ypos 25
+                xsize 930
 
     ## If there's a side image, display it above the text. Do not display on the
     ## phone variant - there's no room.
     if not renpy.variant("small"):
-        add SideImage() xalign 0.0 yalign 1.0
-
+        add SideImage() xalign 0.2 yalign 0.85 zoom 0.78
 
 ## Make the namebox available for styling through the Character object.
 init python:
@@ -1613,7 +1485,7 @@ style bubble_what:
     align (0.5, 0.5)
     text_align 0.5
     layout "subtitle"
-    color "#000"
+    color "#ffffff"
 
 define bubble.frame = Frame("gui/bubble.png", 55, 55, 55, 95)
 define bubble.thoughtframe = Frame("gui/thoughtbubble.png", 55, 55, 55, 55)

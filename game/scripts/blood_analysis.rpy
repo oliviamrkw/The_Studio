@@ -2,16 +2,43 @@
 This file contains all labels and functions related to the blood analysis
 """
 
-label splatter:
+label click_canvas:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
-    scene splatter
+
+    scene inspect_canvas
+
+    if analyzed["canvas"]:
+        $ analyzing["canvas"] = False
+        s normal "You've already inspected the canvas."
+        jump crimescene
+    
+    s "Could this have been painted with blood?"
+
+    $ analyzing["canvas"] = True
+
+    if encountered["canvas"] == False:
+        $ encountered["canvas"] = True
+        "New photo added to evidence."
+
+    $ addToToolbox(["swab_pack"])
+    call screen toolbox
+    call screen toolbox_blood
+
+label click_stool:
+    $ default_mouse = "default"
+    hide screen casefile_physical
+    hide screen casefile_photos
+    
+    scene inspect_stool
 
     if analyzed["splatter"] and analyzed["splatter presumptive"] and analyzed["splatter packaged"]:
         $ analyzing["splatter"] = False
         s normal3 "You've finished analyzing the splatter."
-        jump corridor
+        jump crimescene
+
+    s "A broken stool and a pool of red liquid."
 
     if encountered["splatter"] == False:
         $ encountered["splatter"] = True
@@ -23,36 +50,33 @@ label splatter:
     call screen toolbox
     call screen toolbox_blood
 
-label footprint:
+label click_knife:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
 
-    if analyzed["footprint"]:
-        $ analyzing["footprint"] = False
-        scene footprint enhanced
-        s normal2 "You've already enhanced the footprint."
-        s normal2 "There's nothing more you can do now."
-        jump corridor
+    s "A bloody knife."
 
-    $ analyzing["footprint"] = True
-    scene footprint
+    if analyzed["knife"]:
+        $ analyzing["knife"] = False
+        scene inspect_knife
+        s normal2 "You've already inspected the knife"
+        jump crimescene
 
-    if encountered["footprint"] == False:
-        $ encountered["footprint"] = True
+    $ analyzing["knife"] = True
+    scene inspect_knife
+
+    if encountered["knife"] == False:
+        $ encountered["knife"] = True
         "New photo added to evidence."
 
-    if "swab_pack" not in toolbox_items and "hungarian_red" not in toolbox_items:
-        $ addToToolbox(["swab_pack", "hungarian_red"])
-
+    $ addToToolbox(["swab_pack"])
     call screen toolbox
     call screen toolbox_blood
 
-
-
-label footprint_swab:
-    scene footprint dark
-    if asked["footprint_swab"]:
+label canvas_swab:
+    scene inspect_canvas dark
+    if asked["canvas_swab"]:
         show red swab at Transform(xpos=0.4, ypos=0.3)
         "Sample successfully collected."
         jump sample
@@ -61,17 +85,20 @@ label footprint_swab:
     menu:
         "How would you like to collect the sample?"
         "Using a wet swab":
+            $ asked["canvas_swab"] = True
             hide clean swab
             show red swab at Transform(xpos=0.4, ypos=0.3)
             "Sample successfully collected."
-            $ asked["footprint_swab"] = True
             jump sample
         "Using a dry swab":
-            "Remember, we can't collect dry samples using dry swabs."
-            jump footprint
+            $ asked["canvas_swab"] = True
+            hide clean swab
+            show red swab at Transform(xpos=0.4, ypos=0.3)
+            "Sample successfully collected."
+            jump sample
 
 label splatter_swab:
-    scene splatter dark
+    scene inspect_stool dark
     if asked["splatter_swab"]:
         show red swab at Transform(xpos=0.4, ypos=0.3)
         "Sample successfully collected."
@@ -184,14 +211,6 @@ label presumptive:
         show screen bloody_swab
         call screen toolbox
 
-label enhancement:
-    $ encountered["footprint enhanced"] = True
-    scene footprint enhanced
-    "The flooring with the print will be taken back to the lab for further examination."
-    $ analyzing["footprint"] = False
-    $ analyzed["footprint"] = True
-    jump corridor
-
 # Splatter packaging
 label splatter_alt:
     python:
@@ -248,3 +267,11 @@ label splatter_packaging_3:
         $ addToInventory(["splatter"])
         hide casefile_evidence_idle
         jump splatter
+
+label enhancement:
+    $ encountered["fingerprint enhanced"] = True
+    scene inspect_knife
+    "The flooring with the print will be taken back to the lab for further examination."
+    $ analyzing["knife fingerprint"] = False
+    $ analyzed["knife fingerprint"] = True
+    jump crimescene
