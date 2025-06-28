@@ -23,8 +23,9 @@ label click_canvas:
         "New photo added to evidence."
 
     $ addToToolbox(["swab_pack"])
+    # $ asked["canvas_swab"] = True
     call screen toolbox
-    call screen toolbox_blood
+    # call screen toolbox_presumptive
 
 label click_stool:
     $ default_mouse = "default"
@@ -57,13 +58,13 @@ label click_knife:
 
     s "A bloody knife."
 
-    if analyzed["knife"]:
+    if analyzed["knife presumptive"] and analyzed["knife packaged"] and analyzed["knife fingerprint"]:
         $ analyzing["knife"] = False
         scene inspect_knife
         s normal2 "You've already inspected the knife"
         jump crimescene
 
-    $ analyzing["knife"] = True
+    $ analyzing["knife blood"] = True
     scene inspect_knife
 
     if encountered["knife"] == False:
@@ -75,7 +76,7 @@ label click_knife:
     call screen toolbox_blood
 
 label canvas_swab:
-    scene inspect_canvas dark
+    scene inspect_canvas
     if asked["canvas_swab"]:
         show red swab at Transform(xpos=0.4, ypos=0.3)
         "Sample successfully collected."
@@ -92,6 +93,29 @@ label canvas_swab:
             jump sample
         "Using a dry swab":
             $ asked["canvas_swab"] = True
+            hide clean swab
+            show red swab at Transform(xpos=0.4, ypos=0.3)
+            "Sample successfully collected."
+            jump sample
+
+label knife_swab:
+    scene inspect_knife
+    if asked["knife_swab"]:
+        show red swab at Transform(xpos=0.4, ypos=0.3)
+        "Sample successfully collected."
+        jump sample
+    
+    show clean swab at Transform(xpos=0.4, ypos=0.3)
+    menu:
+        "How would you like to collect the sample?"
+        "Using a wet swab":
+            $ asked["knife_swab"] = True
+            hide clean swab
+            show red swab at Transform(xpos=0.4, ypos=0.3)
+            "Sample successfully collected."
+            jump sample
+        "Using a dry swab":
+            $ asked["knife_swab"] = True
             hide clean swab
             show red swab at Transform(xpos=0.4, ypos=0.3)
             "Sample successfully collected."

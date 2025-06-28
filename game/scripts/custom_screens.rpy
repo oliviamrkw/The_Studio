@@ -226,14 +226,6 @@ screen toolbox_blood():
                 If(analyzing["splatter"], Jump("splatter_swab"),
                 If(analyzing["canvas"], Jump("canvas_swab"))))
 
-    # showif analyzing["canvas"]:
-    #     hbox:
-    #         xpos 0.895 ypos 0.26
-    #         imagebutton:
-    #             hovered Notify("hungarian red")
-    #             auto "hungarian_red_%s.png"
-    #             action Jump("enhancement")
-
 screen toolbox_presumptive():
     # This is the toolbox used for the presumptive test.
     zorder 1
@@ -266,6 +258,14 @@ screen toolbox_presumptive():
 
             action Jump("trash")
 
+    # showif analyzing["canvas"]:
+    #     hbox:
+    #         xpos 0.895 ypos 0.26
+    #         imagebutton:
+    #             hovered Notify("hungarian red")
+    #             auto "hungarian_red_%s.png"
+    #             action Jump("enhancement")
+
 screen toolbox_packaging():
     # This is the toolbox used for packaging the evidence.
     zorder 1
@@ -282,7 +282,7 @@ screen toolbox_packaging():
             sensitive tools["bag"]
             auto "evidence_bag_%s" at Transform(zoom=0.9)
             hovered Notify("evidence bag")
-            action [SetDict(tools, "tube", False), SetDict(tools, "bag", False), SetDict(tools, "tamper evident tape", True), If(analyzing["fingerprint"], Jump("packaging_1")), If(analyzing["splatter"] or analyzing["footprint"], Jump("splatter_packaging_1"))]
+            action [SetDict(tools, "tube", False), SetDict(tools, "bag", False), SetDict(tools, "tamper evident tape", True), If(analyzing["fingerprint"], Jump("packaging_1")), If(analyzing["splatter"], Jump("splatter_packaging_1"))]
     
     hbox:
         xpos 0.885 ypos 0.51
@@ -290,7 +290,7 @@ screen toolbox_packaging():
             sensitive tools["tamper evident tape"]
             hovered Notify("tamper evident tape")
             auto "tamper_evident_tape_%s.png" at Transform(zoom=0.9)
-            action [SetDict(tools, "tamper evident tape", False), If(analyzing["splatter"] or analyzing["footprint"], Jump("splatter_packaging_2"), Jump("packaging_2"))]
+            action [SetDict(tools, "tamper evident tape", False), If(analyzing["splatter"]], Jump("splatter_packaging_2"), Jump("packaging_2"))]
 
 # Drag and drop screens -------------------------------------------------------------------------------
 
@@ -378,7 +378,7 @@ screen tape_to_bag():
 # Backgrounds -------------------------------------------------------------------------------------------
 
 screen crimescene():
-    zorder 1
+    zorder 0
     # modal True
 
     add "backgrounds/room.png"
@@ -386,14 +386,14 @@ screen crimescene():
     imagebutton:
         idle "images/objects/knife.png"
         hover "images/objects/hover/knife.png"
-        xpos 100
+        xpos 200
         ypos 900
         action Return("knife")
     
     imagebutton:
         idle "images/objects/canvas.png"
         hover "images/objects/hover/canvas.png"
-        xpos 150
+        xpos 200
         ypos 200
         action Return("canvas")
 
@@ -471,7 +471,8 @@ screen dark_overlay_with_mouse():
         hotspot (601, 368, 197, 208) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("handprint")]
 
         # Fingerprint
-        hotspot (419, 351, 99, 104) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("fingerprint")]
+        hotspot (419, 351, 99, 104) action [If (default_mouse == "dropper", Jump ("start"))]
+        # [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("fingerprint")]
 
     # Adding the darkness overlay with the current mouse position
     add "darkness" pos mouse anchor (0.5, 0.5)

@@ -30,7 +30,7 @@ init python:
         "tube": False,
         "bag": False,
         "tamper evident tape": False,
-        "swab": False
+        "swab": True
     }
 
     # Used to keep track of player's progress in the game
@@ -69,7 +69,9 @@ init python:
     # Used to ensure that the player is not asked the "How would you like to collect the sample?" question multiple times
     asked = {
         "splatter_swab": False,
-        "footprint_swab": False
+        "canvas_swab": False,
+        "table_swab": False,
+        "knife_swab": False
     }
 
     # Used to compare against the player's Kastle-Meyer order in the presumptive test scene
@@ -195,6 +197,10 @@ label start:
 
     $all_pieces = 0
 
+    show screen full_inventory
+    jump begin
+
+label begin:
     scene outside_room
     show nina normal at right
 
@@ -213,10 +219,17 @@ label start:
     show screen outside_room
     $ renpy.pause(hard=True)
 
+label toolbox_init:
+    python:
+        addToInventory(["swab_pack"])
+        addToInventory(["ethanol"])
+        addToInventory(["reagent"])
+        addToInventory(["hydrogen"])
+
 label go_to_scene():
-    window show
     s "We're at the crime scene now."
     scene room
+    show screen full_inventory
     show screen crimescene
     return
 

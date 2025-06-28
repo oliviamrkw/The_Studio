@@ -1,26 +1,32 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/scripts/script.rpy", line 233, in script call
+  File "game/scripts/script.rpy", line 246, in script call
     call click_canvas
-  File "game/scripts/blood_analysis.rpy", line 258, in script
-    jump crimescene
-ScriptError: could not find label 'crimescene'.
+  File "game/scripts/blood_analysis.rpy", line 228, in script
+    if analyzing["footprint"]:
+  File "game/scripts/blood_analysis.rpy", line 228, in <module>
+    if analyzing["footprint"]:
+KeyError: 'footprint'
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/scripts/script.rpy", line 233, in script call
+  File "game/scripts/script.rpy", line 246, in script call
     call click_canvas
-  File "game/scripts/blood_analysis.rpy", line 258, in script
-    jump crimescene
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 1712, in execute
-    rv = renpy.game.script.lookup(target)
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\script.py", line 1103, in lookup
-    raise ScriptError("could not find label '%s'." % str(original))
-ScriptError: could not find label 'crimescene'.
+  File "game/scripts/blood_analysis.rpy", line 228, in script
+    if analyzing["footprint"]:
+  File "C:\Users\olivi\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 1856, in execute
+    if renpy.python.py_eval(condition):
+  File "C:\Users\olivi\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1218, in py_eval
+    return py_eval_bytecode(code, globals, locals)
+  File "C:\Users\olivi\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1211, in py_eval_bytecode
+    return eval(bytecode, globals, locals)
+  File "game/scripts/blood_analysis.rpy", line 228, in <module>
+    if analyzing["footprint"]:
+KeyError: 'footprint'
 
-Windows-10-10.0.19045 AMD64
+Windows-10-10.0.26100 AMD64
 Ren'Py 8.3.7.25031702
 The Studio 1.0
-Thu Jun 26 22:38:34 2025
+Fri Jun 27 13:58:45 2025

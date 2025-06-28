@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/scripts/custom_screens.rpy", line 226: Line is indented, but the preceding action statement does not expect a block. Please check this line's indentation. You may have forgotten a colon (:).
-    If(analyzing["canvas"], Jump("canvas_swab"))
-    ^
+File "game/scripts/inventory.rpy", line 420: invalid syntax
+                            elif item.type in ["reagent"]::
+                                                           ^
 
 Ren'Py Version: Ren'Py 8.3.7.25031702
-Thu Jun 26 22:49:21 2025
+Fri Jun 27 13:55:14 2025

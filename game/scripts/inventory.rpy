@@ -82,10 +82,16 @@ init python:
             renpy.jump("handprint_gel")
         # Splatter and footprint ------------------------------
         elif item == "swab_pack" and tools["swab"]:
+            # default_mouse = "ethanol"
+            # tools["swab"] = False
             hide_all_inventory()
-            if analyzing["footprint"]:
-                renpy.jump("footprint_swab")
-            else:
+            if analyzing["canvas"]:
+                renpy.jump("canvas_swab")
+            elif analyzing["knife blood"]:
+                renpy.jump("knife_swab")
+            elif analyzing["table"]:
+                renpy.jump("table_swab")
+            elif analyzing["stool"]:
                 renpy.jump("splatter_swab")
         elif item == "hungarian_red":
             hide_all_inventory()
@@ -418,7 +424,6 @@ init python:
                     for item in toolbox_sprites:
                         if item == toolbox_sprites[toolbox_items.index("lid_in_tweezers")]:
                             if 850 <= x <= 950 and 780 <= y <= 800:
-                                # characterSay(who = "Claire", what = ["lol"])
                                 renpy.jump("too_close")
                             elif 850 <= x <= 950 and 750 <= y <= 780:
                                 renpy.jump("perfect")
@@ -1107,8 +1112,8 @@ screen inventoryItemMenu(item):
                     item_name = name
 
         imagebutton auto "UI/view-inventory-item-%s.png" align (0.0, 0.5) at half_size action [Show("inspectItem", items = [item.type]), Hide("inventoryItemMenu")]
-        # imagebutton auto "UI/use-inventory-item-%s.png" align (1.0, 0.5) at half_size action [Function(inventory_actions, item = "{}".format(items[0])), Hide("inventoryItemMenu")]
-        imagebutton auto "UI/use-inventory-item-%s.png" align (1.0, 0.5) at half_size action NullAction()
+        imagebutton auto "UI/use-inventory-item-%s.png" align (1.0, 0.5) at half_size action [Function(inventory_actions, item = "{}".format(items[0])), Hide("inventoryItemMenu")]
+        # imagebutton auto "UI/use-inventory-item-%s.png" align (1.0, 0.5) at half_size action NullAction()
         # imagebutton auto "UI/expand-inventory-item-%s.png" align (2.0, 0.5) at half_size action If(renpy.get_screen("toolboxpop") == None, true= Show("toolboxpop"), false= Hide("toolboxpop")) 
 
 # toolbox item menu
@@ -1120,20 +1125,49 @@ screen toolboxItemMenu(item):
         xpos int(item.x)
         ypos int(item.y)
 
-        python:
-            items = [item.type]
-            item_name = ""
-            item_desc = ""
-            for name in inventory_item_names:
-                temp_name = name.replace(" ", "-")
-                temp_name = name.replace(" ", "_")
-                if temp_name.lower() == items[0]:
-                    item_name = name
+        $ items = [item.type]
+
+        # python:
+        #     items = [item.type]
+        #     item_name = ""
+        #     item_desc = ""
+        #     for name in inventory_item_names:
+        #         temp_name = name.replace(" ", "-")
+        #         temp_name = name.replace(" ", "_")
+        #         if temp_name.lower() == items[0]:
+        #             item_name = name
 
         imagebutton auto "UI/view-inventory-item-%s.png" align (0.0, 0.5) at half_size action [Show("inspectItem", items = [item.type]), Hide("toolboxItemMenu")]
         imagebutton auto "UI/use-inventory-item-%s.png" align (1.0, 0.5) at half_size action [Function(toolbox_actions, item = "{}".format(items[0])), Hide("toolboxItemMenu")]
         # imagebutton auto "UI/use-inventory-item-%s.png" align (1.0, 0.5) at half_size action NullAction()
         # imagebutton auto "UI/expand-inventory-item-%s.png" align (1.0, 0.5) at half_size action If(renpy.get_screen("toolboxpop") == None, true= (Show("toolboxpop")), false= Hide("toolboxpop")) 
+
+# toolbox item menu
+screen toolboxItemMenuUse(item):
+    zorder 7
+    frame:
+        xysize (toolbox_slot_size[0], toolbox_slot_size[1])
+        background "#FFFFFF30"
+        xpos int(item.x)
+        ypos int(item.y)
+
+        $ items = [item.type]
+
+        # python:
+        #     items = [item.type]
+        #     item_name = ""
+        #     item_desc = ""
+        #     for name in inventory_item_names:
+        #         temp_name = name.replace(" ", "-")
+        #         temp_name = name.replace(" ", "_")
+        #         if temp_name.lower() == items[0]:
+        #             item_name = name
+
+        imagebutton auto "UI/view-inventory-item-%s.png" align (0.0, 0.5) at half_size action [Show("inspectItem", items = [item.type]), Hide("toolboxItemMenuUse")]
+        imagebutton auto "UI/use-inventory-item-%s.png" align (1.0, 0.5) at half_size action [Function(startDrag2, item = item), Hide("toolboxItemMenuUse")]
+        # imagebutton auto "UI/use-inventory-item-%s.png" align (1.0, 0.5) at half_size action NullAction()
+        # imagebutton auto "UI/expand-inventory-item-%s.png" align (1.0, 0.5) at half_size action If(renpy.get_screen("toolboxpop") == None, true= (Show("toolboxpop")), false= Hide("toolboxpop")) 
+
 
 # toolbox pop-up item menu
 screen toolboxPopItemMenu(item):
