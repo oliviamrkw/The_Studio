@@ -3,14 +3,6 @@ This file has all labels and functions related to the fingerprint and handprint 
 It also contains labels related to packaging the fingerprint, handprint, and gin bottle.
 """
 
-label knife:
-    $ default_mouse = "default"
-    hide screen casefile_physical
-    hide screen casefile_photos
-    scene inspect_knife
-    $ addToToolbox(["uv_light", "magnetic_powder", "scalebar", "tape", "backing_card", "gel_lifter", "evidence_bag"])
-    call screen toolbox
-
 label fingerprint:
     if analyzed["knife fingerprint"]:
         $ tools["magnetic powder"] = False

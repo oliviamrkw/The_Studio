@@ -215,7 +215,7 @@ screen toolbox_blood():
         xpos 0.13 ypos 0.03
         imagebutton:
             auto "back_button_%s.png" at Transform(zoom=0.2)
-            action [If(analyzing["splatter"], SetDict(analyzing, "splatter", False), SetDict(analyzing, "footprint", False)), Jump("crimescene")]
+            action [If(analyzing["splatter"], SetDict(analyzing, "splatter", False)), Jump("crimescene")]
     hbox:
         xpos 0.77 ypos 0.11
         imagebutton:
@@ -224,7 +224,8 @@ screen toolbox_blood():
             auto "swab_pack_%s.png" at Transform(zoom=0.8)
             action If(analyzing["table"], Jump("table_swab"),
                 If(analyzing["splatter"], Jump("splatter_swab"),
-                If(analyzing["canvas"], Jump("canvas_swab"))))
+                If(analyzing["knife"], Jump("knife_swab"),
+                If(analyzing["canvas"], Jump("canvas_swab")))))
 
 screen toolbox_presumptive():
     # This is the toolbox used for the presumptive test.
@@ -290,7 +291,7 @@ screen toolbox_packaging():
             sensitive tools["tamper evident tape"]
             hovered Notify("tamper evident tape")
             auto "tamper_evident_tape_%s.png" at Transform(zoom=0.9)
-            action [SetDict(tools, "tamper evident tape", False), If(analyzing["splatter"]], Jump("splatter_packaging_2"), Jump("packaging_2"))]
+            action [SetDict(tools, "tamper evident tape", False), If(analyzing["splatter"], Jump("splatter_packaging_2"), Jump("packaging_2"))]
 
 # Drag and drop screens -------------------------------------------------------------------------------
 
@@ -405,11 +406,11 @@ screen crimescene():
         action Return("letters")
 
     imagebutton:
-        idle "images/objects/stool_blood.png"
-        hover "images/objects/hover/stool_blood.png"
+        idle "images/objects/stool.png"
+        hover "images/objects/hover/stool.png"
         xpos 300
         ypos 700
-        action Return("stool_blood")
+        action Return("stool")
 
     imagebutton:
         idle "images/objects/table.png"
@@ -426,23 +427,23 @@ screen crimescene():
         action Return("laptop")
 
     imagebutton:
-        idle "images/objects/drawer_flowers.png"
-        hover "images/objects/hover/drawer_flowers.png"
+        idle "images/objects/drawer.png"
+        hover "images/objects/hover/drawer.png"
         xpos 915
         ypos 415
-        action Return("drawer_flowers")
+        action Return("drawer")
 
-    showif encountered["knife"]:
-        add "marker 1" at Transform(xpos=0.54, ypos=0.77, zoom= 0.32)
-    
     showif encountered["canvas"]:
-        add "marker 2" at Transform(xpos=0.63, ypos=0.74, zoom=0.3)
+        add "marker 1" at Transform(xpos=0.06, ypos=0.76, zoom= 0.32)
+    
+    showif encountered["knife"]:
+        add "marker 2" at Transform(xpos=0.2, ypos=0.89, zoom=0.3)
     
     showif encountered["stool"]:
-        add "marker 3" at Transform(xpos=0.32, ypos=0.83, zoom=0.33)
+        add "marker 3" at Transform(xpos=0.6, ypos=0.83, zoom=0.33)
 
     showif encountered["table"]:
-        add "marker 4" at Transform(xpos=0.32, ypos=0.83, zoom=0.33)
+        add "marker 4" at Transform(xpos=0.81, ypos=0.88, zoom=0.33)
     
     
 
@@ -524,4 +525,4 @@ screen inspect_stool():
     imagemap:
         ground "images/backgrounds/inspect.png"
 
-    add "images/objects/stool_blood.png" xpos 600 ypos 500
+    add "images/objects/stool.png" xpos 600 ypos 500

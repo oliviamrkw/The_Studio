@@ -35,23 +35,26 @@ init python:
 
     # Used to keep track of player's progress in the game
     analyzing = {
-        "knife fingerprint": False,
-        "knife blood": False,
+        "knife": False,
         "canvas": False,
-        "splatter": False,
+        "stool": False,
         "table": False,
     }
 
     # Used to keep track of what evidence has been analyzed
     analyzed = {
         "canvas": False,
+        "canvas presumptive": False,
+        "canvas packaged": False,
         "splatter": False,
         "splatter presumptive": False,
         "splatter packaged": False,
         "knife fingerprint": False,
         "knife presumptive": False,
+        "knife packaged": False,
         "knife fingerprint packaged": False,
         "table presumptive": False,
+        "table packaged": False,
     }
 
     # Used to keep track of what evidence has been encountered
@@ -68,7 +71,7 @@ init python:
 
     # Used to ensure that the player is not asked the "How would you like to collect the sample?" question multiple times
     asked = {
-        "splatter_swab": False,
+        "stool_swab": False,
         "canvas_swab": False,
         "table_swab": False,
         "knife_swab": False
@@ -204,15 +207,15 @@ label begin:
     scene outside_room
     show nina normal at right
 
-    s "Good evening, investigator."
-    show nina talk at right
-    s "We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment."
-    show nina write at right
-    s "His neighbours claim to have heard a heated argument at around 6pm with a woman, and went to check up on him later at 10pm, only to find him dead."
-    s "There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit."
-    show nina think at right
-    s "We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene."
-    show nina normal at right
+    # s "Good evening, investigator."
+    # show nina talk at right
+    # s "We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment."
+    # show nina write at right
+    # s "His neighbours claim to have heard a heated argument at around 6pm with a woman, and went to check up on him later at 10pm, only to find him dead."
+    # s "There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit."
+    # show nina think at right
+    # s "We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene."
+    # show nina normal at right
     s "You may enter whenever you’re ready."
     window hide
 
@@ -225,6 +228,17 @@ label toolbox_init:
         addToInventory(["ethanol"])
         addToInventory(["reagent"])
         addToInventory(["hydrogen"])
+        addToInventory(["uv light"])
+        addToInventory(["magnetic powder"])
+        # addToInventory(["silver granular powder"])
+        addToInventory(["scalebar"])
+        addToInventory(["gel lifter"])
+        addToInventory(["tape"])
+        addToInventory(["backing"])
+        addToInventory(["packaging"])
+        addToInventory(["tube"])
+        addToInventory(["bag"])
+        addToInventory(["tamper evident tape"])
 
 label go_to_scene():
     s "We're at the crime scene now."
@@ -261,7 +275,7 @@ label click_laptop:
     $ inspected_objects.add("laptop")
     show screen inspect_laptop
 
-    s "It seems his laptop has been left open, let's take a look at the messages."
+    s "It seems his laptop has been left open, let's take a look at the messages. (click)"
 
     window hide
     pause
@@ -277,23 +291,7 @@ label click_letters:
     
     return
 
-label click_table:
-    $ inspected_objects.add("table")
-    show screen inspect_table
-
-    s "Painting supplies, and red liquid."
-
-    menu: 
-        s "Do you want to perform a presumptive blood test?"
-
-        "Yes":
-            s "The test confirms the substance on the knife is blood."
-        "No":
-            s "Let's keep investigating."
-
-    return
-
-label click_drawer_flowers:
+label click_drawer:
     $ inspected_objects.add("drawer")
     show screen inspect_drawer
 

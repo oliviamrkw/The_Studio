@@ -12,7 +12,7 @@ label click_canvas:
     if analyzed["canvas"]:
         $ analyzing["canvas"] = False
         s normal "You've already inspected the canvas."
-        jump crimescene
+        show screen crimescene
     
     s "Could this have been painted with blood?"
 
@@ -23,57 +23,74 @@ label click_canvas:
         "New photo added to evidence."
 
     $ addToToolbox(["swab_pack"])
-    # $ asked["canvas_swab"] = True
     call screen toolbox
-    # call screen toolbox_presumptive
 
 label click_stool:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
-    
     scene inspect_stool
 
     if analyzed["splatter"] and analyzed["splatter presumptive"] and analyzed["splatter packaged"]:
-        $ analyzing["splatter"] = False
+        $ analyzing["stool"] = False
         s normal3 "You've finished analyzing the splatter."
-        jump crimescene
+        show screen crimescene
 
     s "A broken stool and a pool of red liquid."
 
-    if encountered["splatter"] == False:
-        $ encountered["splatter"] = True
-        "New photo added to evidence."
+    $ analyzing["stool"] = True
 
-    $ analyzing["splatter"] = True
+    if encountered["stool"] == False:
+        $ encountered["stool"] = True
+        "New photo added to evidence."    
 
     $ addToToolbox(["swab_pack"])
     call screen toolbox
-    call screen toolbox_blood
 
 label click_knife:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
-
-    s "A bloody knife."
-
-    if analyzed["knife presumptive"] and analyzed["knife packaged"] and analyzed["knife fingerprint"]:
-        $ analyzing["knife"] = False
-        scene inspect_knife
-        s normal2 "You've already inspected the knife"
-        jump crimescene
-
-    $ analyzing["knife blood"] = True
     scene inspect_knife
+
+    s "A bloody knife. Maybe we can check for fingerprints too."
+
+    if analyzed["knife presumptive"] and analyzed["knife packaged"] and analyzed["knife fingerprint"] and analyzed["knife fingerprint packaged"]:
+        $ analyzing["knife"] = False
+        s normal2 "You've already inspected the knife"
+        show screen crimescene
+
+    $ analyzing["knife"] = True
 
     if encountered["knife"] == False:
         $ encountered["knife"] = True
         "New photo added to evidence."
 
     $ addToToolbox(["swab_pack"])
+    $ addToToolbox(["uv_light", "magnetic_powder", "scalebar", "tape", "backing_card", "gel_lifter"])
     call screen toolbox
-    call screen toolbox_blood
+
+label click_table:
+    $ default_mouse = "default"
+    hide screen casefile_physical
+    hide screen casefile_photos
+    scene inspect_table
+
+    s "Painting supplies, and red liquid."
+
+    if analyzed["table presumptive"] and analyzed["table packaged"]:
+        $ analyzing["table"] = False
+        s normal2 "You've already inspected the table"
+        show screen crimescene
+
+    $ analyzing["table"] = True
+
+    if encountered["table"] == False:
+        $ encountered["table"] = True
+        "New photo added to evidence."
+
+    $ addToToolbox(["swab_pack"])
+    call screen toolbox
 
 label canvas_swab:
     scene inspect_canvas
@@ -121,9 +138,9 @@ label knife_swab:
             "Sample successfully collected."
             jump sample
 
-label splatter_swab:
-    scene inspect_stool dark
-    if asked["splatter_swab"]:
+label table_swab:
+    scene inspect_knife
+    if asked["table_swab"]:
         show red swab at Transform(xpos=0.4, ypos=0.3)
         "Sample successfully collected."
         jump sample
@@ -132,13 +149,36 @@ label splatter_swab:
     menu:
         "How would you like to collect the sample?"
         "Using a wet swab":
-            $ asked["splatter_swab"] = True
+            $ asked["table_swab"] = True
             hide clean swab
             show red swab at Transform(xpos=0.4, ypos=0.3)
             "Sample successfully collected."
             jump sample
         "Using a dry swab":
-            $ asked["splatter_swab"] = True
+            $ asked["table_swab"] = True
+            hide clean swab
+            show red swab at Transform(xpos=0.4, ypos=0.3)
+            "Sample successfully collected."
+            jump sample
+
+label stool_swab:
+    scene inspect_stool
+    if asked["stool_swab"]:
+        show red swab at Transform(xpos=0.4, ypos=0.3)
+        "Sample successfully collected."
+        jump sample
+    
+    show clean swab at Transform(xpos=0.4, ypos=0.3)
+    menu:
+        "How would you like to collect the sample?"
+        "Using a wet swab":
+            $ asked["stool_swab"] = True
+            hide clean swab
+            show red swab at Transform(xpos=0.4, ypos=0.3)
+            "Sample successfully collected."
+            jump sample
+        "Using a dry swab":
+            $ asked["stool_swab"] = True
             hide clean swab
             show red swab at Transform(xpos=0.4, ypos=0.3)
             "Sample successfully collected."
@@ -153,7 +193,7 @@ label sample:
             hide red swab
             show screen bloody_swab
             python: 
-                removal_list = ["swab_pack", "hungarian_red"]
+                removal_list = ["swab_pack"]
                 for item in removal_list:
                     if item in toolbox_items:
                         removeToolboxItem(toolbox_sprites[toolbox_items.index(item)])
@@ -170,9 +210,7 @@ label trash:
             hide red swab
             $ player_kastle_meyer_order = []
             hide screen toolbox_presumptive
-            if analyzing["footprint"]:
-                jump footprint
-            elif analyzing["splatter"]:
+            if analyzing["stool"]:
                 jump splatter
         "No":
             show screen bloody_swab
@@ -194,7 +232,7 @@ label presumptive:
 
     if len(player_kastle_meyer_order) > 5:
         $ default_mouse = "default"
-        s sweat "I think you put in too many drops... you should try again."
+        s think "I think you put in too many drops... you should try again."
         hide screen bloody_swab
         hide red swab
         $ player_kastle_meyer_order = []
@@ -206,9 +244,7 @@ label presumptive:
                     removeToolboxItem(toolbox_sprites[toolbox_items.index(item)])
 
         hide screen toolbox_presumptive
-        if analyzing["footprint"]:
-            jump footprint
-        elif analyzing["splatter"]:
+        if analyzing["stool"]:
             jump splatter
 
     if player_kastle_meyer_order in valid_kastle_meyer_orders:
@@ -224,11 +260,8 @@ label presumptive:
             for item in removal_list:
                 if item in toolbox_items:
                     removeToolboxItem(toolbox_sprites[toolbox_items.index(item)])
-
-        if analyzing["footprint"]:
-            $ analyzed["footprint presumptive"] = True
-            jump footprint
-        elif analyzing["splatter"]:
+        
+        if analyzing["stool"]:
             $ analyzed["splatter presumptive"] = True
             jump splatter
     else:
@@ -238,16 +271,20 @@ label presumptive:
 # Splatter packaging
 label splatter_alt:
     python:
-        removal_list = ["swab_pack", "hungarian_red"]
+        removal_list = ["swab_pack", "uv_light", "magnetic_powder", "scalebar", "tape", "backing_card", "gel_lifter"]
         for item in removal_list:
             if item in toolbox_items:
                 removeToolboxItem(toolbox_sprites[toolbox_items.index(item)])
         
         addToToolbox(["evidence_bag", "tube", "tamper_evident_tape"])
-    if analyzing["splatter"]:
-        scene splatter dark
-    else:
-        scene footprint dark
+    if analyzing["stool"]:
+        scene inspect_stool
+    elif analyzing["canvas"]:
+        scene inspect_canvas
+    elif analyzing["knife"]:
+        scene inspect_knife
+    elif analyzing["table"]:
+        scene inspect_table
     show red swab at Transform(xpos=0.4, ypos=0.3)
     $ tools["tube"] = True
     call screen toolbox
@@ -278,24 +315,37 @@ label splatter_packaging_3:
                 removeToolboxItem(toolbox_sprites[toolbox_items.index(item)])
 
     show casefile_evidence_idle at Transform(xpos=0.3, ypos=0.24)
-    if analyzing["footprint"]:
-        "The footprint sample has been added to your evidence."
-        $ analyzed["footprint packaged"] = True
-        hide casefile_evidence_idle
-        jump footprint
-    else:
-        "The splatter sample has been added to your evidence."
-        $ analyzing["splatter"] = False
-        $ analyzed["splatter"] = True
+    "The blood sample has been added to your evidence."
+    if analyzing["stool"]:
+        $ analyzing["stool"] = False
+        $ analyzed["splatter presumptive"] = True
         $ analyzed["splatter packaged"] = True
         $ addToInventory(["splatter"])
         hide casefile_evidence_idle
-        jump splatter
+    elif analyzing["canvas"]:
+        $ analyzing["canvas"] = False
+        $ analyzed["canvas presumptive"] = True
+        $ analyzed["canvas packaged"] = True
+        $ addToInventory(["splatter"])
+        hide casefile_evidence_idle
+    elif analyzing["knife"]:
+        $ analyzing["knife"] = False
+        $ analyzed["knife presumptive"] = True
+        $ analyzed["knife packaged"] = True
+        $ addToInventory(["splatter"])
+        hide casefile_evidence_idle
+    elif analyzing["table"]:
+        $ analyzing["table"] = False
+        $ analyzed["table presumptive"] = True
+        $ analyzed["table packaged"] = True
+        $ addToInventory(["splatter"])
+        hide casefile_evidence_idle
+    call screen crimescene
 
-label enhancement:
-    $ encountered["fingerprint enhanced"] = True
-    scene inspect_knife
-    "The flooring with the print will be taken back to the lab for further examination."
-    $ analyzing["knife fingerprint"] = False
-    $ analyzed["knife fingerprint"] = True
-    jump crimescene
+# label enhancement:
+#     $ encountered["fingerprint enhanced"] = True
+#     scene inspect_knife
+#     "The flooring with the print will be taken back to the lab for further examination."
+#     $ analyzing["knife fingerprint"] = False
+#     $ analyzed["knife fingerprint"] = True
+#     show screen crimescene

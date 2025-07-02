@@ -1,69 +1,46 @@
-2025-06-27 17:58:24 UTC
-Windows-10-10.0.26100
+2025-07-02 20:10:19 UTC
+Windows-10-10.0.19045
 Ren'Py 8.3.7.25031702
 
-Early init took 0.14s
-Loading error handling took 0.05s
-Loading script took 0.60s
-Loading save slot metadata took 0.05s
+Early init took 0.12s
+Loading error handling took 0.04s
+Loading script took 0.37s
+Loading save slot metadata took 0.04s
 Loading persistent took 0.00s
 Running init code took 0.09s
 Loading analysis data took 0.02s
 Analyze and compile ATL took 0.00s
-Reloading save slot metadata took 0.04s
+Reloading save slot metadata took 0.03s
 Index archives took 0.00s
-Backing up script files to 'C:\\Users\\olivi\\AppData\\Roaming/RenPy/backups\\The Studio':
-Dump and make backups took 0.07s
+Dump and make backups took 0.06s
 Cleaning cache took 0.00s
 Making clean stores took 0.00s
 Initial gc took 0.07s
-DPI scale factor: 2.000000
+DPI scale factor: 1.000000
 nvdrs: Loaded, about to disable thread optimizations.
-nvdrs: Disabled thread optimizations.
-Creating interface object took 0.47s
+nvdrs: b'DRS_SaveSettings() = -1.' (can be ignored)
+Creating interface object took 0.45s
 Cleaning stores took 0.00s
 Init translation took 0.00s
 Build styles took 0.00s
-Load screen analysis took 0.00s
-Analyze screens took 0.04s
-Save screen analysis took 0.09s
-Prepare screens took 0.29s
-Save pyanalysis. took 0.03s
-Save bytecode. took 0.05s
+Load screen analysis took 0.04s
+Analyze screens took 0.00s
+Save screen analysis took 0.00s
+Prepare screens took 0.10s
+Save pyanalysis. took 0.00s
+Save bytecode. took 0.03s
 Running _start took 0.00s
-Interface start took 0.76s
+Interface start took 0.46s
 
 Initializing gl2 renderer:
-primary display bounds: (0, 0, 3240, 2160)
+primary display bounds: (0, 0, 1920, 1080)
 swap interval: 1 frames
 Windowed mode.
 Vendor: "b'NVIDIA Corporation'"
-Renderer: b'GeForce GTX 1060/PCIe/SSE2'
-Version: b'4.6.0 NVIDIA 461.40'
+Renderer: b'NVIDIA GeForce GTX 1660 SUPER/PCIe/SSE2'
+Version: b'4.6.0 NVIDIA 560.94'
 Display Info: None
-Screen sizes: virtual=(1920, 1080) physical=(3236, 1820) drawable=(3236, 1820)
+Screen sizes: virtual=(1920, 1080) physical=(1920, 1057) drawable=(1920, 1057)
 Maximum texture size: 4096x4096
-
-Full traceback:
-  File "game/scripts/script.rpy", line 246, in script call
-    call click_canvas
-  File "game/scripts/blood_analysis.rpy", line 228, in script
-    if analyzing["footprint"]:
-  File "C:\Users\olivi\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 1856, in execute
-    if renpy.python.py_eval(condition):
-  File "C:\Users\olivi\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1218, in py_eval
-    return py_eval_bytecode(code, globals, locals)
-  File "C:\Users\olivi\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1211, in py_eval_bytecode
-    return eval(bytecode, globals, locals)
-  File "game/scripts/blood_analysis.rpy", line 228, in <module>
-    if analyzing["footprint"]:
-KeyError: 'footprint'
-
-While running game code:
-  File "game/scripts/script.rpy", line 246, in script call
-    call click_canvas
-  File "game/scripts/blood_analysis.rpy", line 228, in script
-    if analyzing["footprint"]:
-  File "game/scripts/blood_analysis.rpy", line 228, in <module>
-    if analyzing["footprint"]:
-KeyError: 'footprint'
+Screen sizes: virtual=(1920, 1080) physical=(1920, 1057) drawable=(1920, 1057)
+Maximum texture size: 4096x4096
