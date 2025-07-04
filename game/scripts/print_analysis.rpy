@@ -3,11 +3,11 @@ This file has all labels and functions related to the fingerprint and handprint 
 It also contains labels related to packaging the fingerprint, handprint, and gin bottle.
 """
 
-label fingerprint:
+label knife_fingerprint:
     if analyzed["knife fingerprint"]:
         $ tools["magnetic powder"] = False
         scene inspect_knife
-        s normal2 "You've already analyzed this print."
+        s "You've already analyzed this print."
         jump crimescene
     $ analyzing["knife fingerprint"] = True
     scene inspect_knife

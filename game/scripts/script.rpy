@@ -20,7 +20,7 @@ init python:
     
     # Used for tool sensitivity in the toolbox screens defined in custom_screens.rpy
     tools = {
-        "uv light": False,
+        "uv light": True,
         "magnetic powder": False,
         "scalebar": False,
         "gel lifter": False,
@@ -219,8 +219,8 @@ label begin:
     s "You may enter whenever you’re ready."
     window hide
 
-    show screen outside_room
-    $ renpy.pause(hard=True)
+    call screen outside_room
+    # $ renpy.pause(hard=True)
 
 label toolbox_init:
     python:
@@ -240,75 +240,86 @@ label toolbox_init:
         addToInventory(["bag"])
         addToInventory(["tamper evident tape"])
 
+label crimescene:
+    scene room
+    $ default_mouse = "magnifying"
+    default crimescene_result = None
+
+    if all(analyzed.values()):
+        jump finish_investigation
+
+    while True:
+        $ crimescene_result = None
+        show screen crimescene_overlay
+
+        while crimescene_result is None:
+            $ renpy.pause(0.1)
+
+        hide screen crimescene_overlay
+        $ result = crimescene_result
+
+        if result == "knife":
+            call click_knife
+        elif result == "canvas":
+            call click_canvas
+        elif result == "laptop":
+            call click_laptop
+        elif result == "letters":
+            call click_letters
+        elif result == "stool":
+            call click_stool
+        elif result == "table":
+            call click_table
+        elif result == "drawer":
+            call click_drawer
+
 label go_to_scene():
     s "We're at the crime scene now."
     scene room
     show screen full_inventory
-    show screen crimescene
+    call crimescene
     return
-
-label investigation_loop:
-    if inspected_objects.issuperset(ALL_OBJECTS):
-        jump finish_investigation
-
-    call screen crimescene  
-    $ result = _return
-
-    if result == "knife":
-        call click_knife
-    elif result == "canvas":
-        call click_canvas
-    elif result == "laptop":
-        call click_laptop
-    elif result == "letters":
-        call click_letters
-    elif result == "stool":
-        call click_stool
-    elif result == "table":
-        call click_table
-    elif result == "drawer":
-        call click_drawer
-
-    jump investigation_loop
-
-label click_laptop:
-    $ inspected_objects.add("laptop")
-    show screen inspect_laptop
-
-    s "It seems his laptop has been left open, let's take a look at the messages. (click)"
-
-    window hide
-    pause
-
-    hide screen inspect_laptop
-    return
-
-label click_letters:
-    $ inspected_objects.add("letters")
-    show screen inspect_letters
-    
-    s "Letters from someone named 'Emily'? I wonder why he has them on his wall."
-    
-    return
-
-label click_drawer:
-    $ inspected_objects.add("drawer")
-    show screen inspect_drawer
-
-    s "A diagnosis."
-
-    return
-
 
 label finish_investigation:
     $ hide_all_inventory()
     scene black
-    show nina at right
+    show nina talk at right
     s "Good work, investigator!\nYou've collected all the evidence."
-    jump end
-
-label end:
     return
+
+label click_laptop:
+    $ default_mouse = "default"
+    hide screen casefile_physical
+    hide screen casefile_photos
+    show screen inspect_laptop
+
+    # s "It seems his laptop has been left open, let's take a look at the messages. (click)"
+
+    # window hide
+    # $ renpy.pause(hard=True)
+
+label click_letters:
+    $ default_mouse = "default"
+    hide screen casefile_physical
+    hide screen casefile_photos
+    show screen inspect_letters
+    
+    # s "Letters from someone named 'Emily'? I wonder why he has them on his wall."
+    
+    # window hide
+    # $ renpy.pause(hard=True)
+
+label click_drawer:
+    $ default_mouse = "default"
+    hide screen casefile_physical
+    hide screen casefile_photos
+    show screen inspect_drawer
+
+    # s "A drawer, it looks like there's a shrine of someone, and some dead roses?"
+
+    # window hide
+    # $ renpy.pause(hard=True)
+
 
 transform half_size:
     zoom 0.5

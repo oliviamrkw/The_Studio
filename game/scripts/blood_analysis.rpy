@@ -12,7 +12,7 @@ label click_canvas:
     if analyzed["canvas"]:
         $ analyzing["canvas"] = False
         s normal "You've already inspected the canvas."
-        show screen crimescene
+        call crimescene
     
     s "Could this have been painted with blood?"
 
@@ -34,7 +34,7 @@ label click_stool:
     if analyzed["splatter"] and analyzed["splatter presumptive"] and analyzed["splatter packaged"]:
         $ analyzing["stool"] = False
         s normal3 "You've finished analyzing the splatter."
-        show screen crimescene
+        call crimescene
 
     s "A broken stool and a pool of red liquid."
 
@@ -58,7 +58,7 @@ label click_knife:
     if analyzed["knife presumptive"] and analyzed["knife packaged"] and analyzed["knife fingerprint"] and analyzed["knife fingerprint packaged"]:
         $ analyzing["knife"] = False
         s normal2 "You've already inspected the knife"
-        show screen crimescene
+        call crimescene
 
     $ analyzing["knife"] = True
 
@@ -81,7 +81,7 @@ label click_table:
     if analyzed["table presumptive"] and analyzed["table packaged"]:
         $ analyzing["table"] = False
         s normal2 "You've already inspected the table"
-        show screen crimescene
+        call crimescene
 
     $ analyzing["table"] = True
 
@@ -340,7 +340,7 @@ label splatter_packaging_3:
         $ analyzed["table packaged"] = True
         $ addToInventory(["splatter"])
         hide casefile_evidence_idle
-    call screen crimescene
+    call crimescene
 
 # label enhancement:
 #     $ encountered["fingerprint enhanced"] = True
@@ -348,4 +348,4 @@ label splatter_packaging_3:
 #     "The flooring with the print will be taken back to the lab for further examination."
 #     $ analyzing["knife fingerprint"] = False
 #     $ analyzed["knife fingerprint"] = True
-#     show screen crimescene
+#     call crimescene

@@ -378,66 +378,66 @@ screen tape_to_bag():
 
 # Backgrounds -------------------------------------------------------------------------------------------
 
-screen crimescene():
+screen crimescene_overlay():
     zorder 0
     # modal True
 
-    add "backgrounds/room.png"
+    add "images/backgrounds/room.png"
 
     imagebutton:
         idle "images/objects/knife.png"
         hover "images/objects/hover/knife.png"
         xpos 200
         ypos 900
-        action Return("knife")
+        action SetVariable("crimescene_result", "knife")
     
     imagebutton:
         idle "images/objects/canvas.png"
         hover "images/objects/hover/canvas.png"
         xpos 200
         ypos 200
-        action Return("canvas")
+        action SetVariable("crimescene_result", "canvas")
 
     imagebutton:
         idle "images/objects/letters.png"
         hover "images/objects/hover/letters.png"
         xpos 1050
         ypos 250
-        action Return("letters")
+        action SetVariable("crimescene_result", "letters")
 
     imagebutton:
         idle "images/objects/stool.png"
         hover "images/objects/hover/stool.png"
         xpos 300
         ypos 700
-        action Return("stool")
+        action SetVariable("crimescene_result", "stool")
 
     imagebutton:
         idle "images/objects/table.png"
         hover "images/objects/hover/table.png"
         xpos 1130
         ypos 575
-        action Return("table")
+        action SetVariable("crimescene_result", "table")
 
     imagebutton:
         idle "images/objects/laptop.png"
         hover "images/objects/hover/laptop.png"
         xpos 1215
         ypos 390
-        action Return("laptop")
+        action SetVariable("crimescene_result", "laptop")
 
     imagebutton:
         idle "images/objects/drawer.png"
         hover "images/objects/hover/drawer.png"
         xpos 915
         ypos 415
-        action Return("drawer")
+        action SetVariable("crimescene_result", "drawer")
 
     showif encountered["canvas"]:
         add "marker 1" at Transform(xpos=0.06, ypos=0.76, zoom= 0.32)
     
     showif encountered["knife"]:
-        add "marker 2" at Transform(xpos=0.2, ypos=0.89, zoom=0.3)
+        add "marker 2" at Transform(xpos=0.18, ypos=0.89, zoom=0.3)
     
     showif encountered["stool"]:
         add "marker 3" at Transform(xpos=0.6, ypos=0.83, zoom=0.33)
@@ -465,15 +465,13 @@ screen dark_overlay_with_mouse():
     timer 0.02 repeat True action SetScreenVariable("mouse", renpy.get_mouse_pos())
 
     imagemap:
-        idle "door flashlight idle"
-        hover "door flashlight hover"
-
-        # Handprint
-        hotspot (601, 368, 197, 208) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("handprint")]
-
-        # Fingerprint
-        hotspot (419, 351, 99, 104) action [If (default_mouse == "dropper", Jump ("start"))]
-        # [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("fingerprint")]
+        idle "images/backgrounds/inspect_knife_fingerprint.png"
+        hover "images/backgrounds/inspect_knife_fingerprint.png"
+        # fingerprint 1
+        hotspot (1091, 627, 87, 84) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("knife_fingerprint")]
+        
+        # fingerprint 2
+        hotspot (1268, 650, 69, 77) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("knife_fingerprint")]
 
     # Adding the darkness overlay with the current mouse position
     add "darkness" pos mouse anchor (0.5, 0.5)
@@ -482,47 +480,90 @@ screen outside_room():
     zorder 0
 
     imagebutton:
-            idle "images/objects/door.png"
-            hover "images/objects/hover/door.png"
-            xpos 750
-            ypos 125
-            action [Hide("outside_room"), Jump("investigation_loop")]
+        idle "images/objects/door.png"
+        hover "images/objects/hover/door.png"
+        xpos 750
+        ypos 125
+        action [Hide("outside_room"), Jump("crimescene")]
 
 screen inspect_canvas():
-    add "images/objects/inspect/canvas.png" xpos 700 ypos 50
+    add "images/backgrounds/inspect_canvas.png" xpos 700 ypos 50
+
+    textbutton "Back" xpos 1800 ypos 1000 action Return()
 
 screen inspect_knife():
-    imagemap:
-        ground "images/backgrounds/inspect.png"
+    add "images/backgrounds/inspect_knife.png" xpos 600 ypos 200
 
-    add "images/objects/inspect/knife.png" xpos 600 ypos 200
+    imagebutton:
+        idle Solid("#ffffffff")
+        xpos 600 ypos 500 xsize 200 ysize 200
 
-screen inspect_laptop():
-    imagemap:
-        ground "images/backgrounds/inspect.png"
-
-    add "images/objects/inspect/laptop.png"
+    textbutton "Back" xpos 1800 ypos 1000 action Return()
 
 screen inspect_table():
-    imagemap:
-        ground "images/backgrounds/inspect.png"
+    add "iimages/backgrounds/inspect_table.png" xpos 600 ypos 200
 
-    add "images/objects/inspect/table.png" xpos 600 ypos 200
+    textbutton "Back" xpos 1800 ypos 1000 action Return()
 
 screen inspect_letters():
-    imagemap:
-        ground "images/backgrounds/inspect.png"
+    add "images/backgrounds/inspect_letters.png" xpos 600 ypos 100
 
-    add "images/objects/inspect/letters.png" xpos 600 ypos 100
-
-screen inspect_drawer():
-    imagemap:
-        ground "images/backgrounds/inspect.png"
-
-    add "images/objects/inspect/drawer.png" xpos 600 ypos 200
+    textbutton "Back" xpos 1800 ypos 1000 action Return()
 
 screen inspect_stool():
-    imagemap:
-        ground "images/backgrounds/inspect.png"
+    add "images/backgrounds/inspect_stool.png" xpos 600 ypos 500
 
-    add "images/objects/stool.png" xpos 600 ypos 500
+    textbutton "Back" xpos 1800 ypos 1000 action Return()
+
+# Interactibles  -------------------------------------------------------------------------------------------
+
+default current_tab = "emily"
+
+screen inspect_laptop():
+    $ default_mouse = "cursor"
+
+    add "images/backgrounds/inspect_laptop.png"
+
+    if current_tab == "emily":
+        add "images/backgrounds/laptop_emily.png"
+    elif current_tab == "fred":
+        add "images/backgrounds/laptop_fred.png"
+    elif current_tab == "mom":
+        add "images/backgrounds/laptop_mom.png"
+
+    imagebutton:
+        idle Solid("#a0a0a010")
+        hover Solid("#ffffff1e")
+        xpos 336 ypos 247 xsize 230 ysize 130
+        action SetVariable("current_tab", "emily")
+
+    imagebutton:
+        idle Solid("#a0a0a010")
+        hover Solid("#ffffff1e")
+        xpos 336 ypos 387 xsize 230 ysize 130
+        action SetVariable("current_tab", "fred")
+
+    imagebutton:
+        idle Solid("#a0a0a010")
+        hover Solid("#ffffff1e")
+        xpos 336 ypos 539 xsize 230 ysize 130
+        action SetVariable("current_tab", "mom")
+
+    textbutton "Back" xpos 1800 ypos 1000 action Hide("inspect_laptop")
+
+default drawer_open = False
+
+screen inspect_drawer():
+    $ default_mouse = "cursor"
+
+    if drawer_open:
+        add "images/backgrounds/inspect_drawer_open.png"
+        textbutton "Back" xpos 1800 ypos 1000 action [SetVariable("drawer_open", False)]
+    else:
+        add "images/backgrounds/inspect_drawer.png"
+        imagebutton:
+            idle Solid("#352f2d1c")
+            hover Solid("#ffffff1e")
+            xpos 790 ypos 603 xsize 335 ysize 134
+            action SetVariable("drawer_open", True)
+        textbutton "Back" xpos 1800 ypos 1000 action Hide("inspect_drawer")

@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/scripts/script.rpy", line 49: invalid syntax
-            "canvas packaged": False,
-             ^
+File "game/scripts/custom_screens.rpy", line 382: expected 'image_name_component' not found.
+    scene "images/backgrounds/room.png"
+          ^
 
 Ren'Py Version: Ren'Py 8.3.7.25031702
-Sun Jun 29 20:57:09 2025
+Thu Jul  3 23:41:02 2025
