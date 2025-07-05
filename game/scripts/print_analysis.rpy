@@ -3,7 +3,19 @@ This file has all labels and functions related to the fingerprint and handprint 
 It also contains labels related to packaging the fingerprint, handprint, and gin bottle.
 """
 
-label knife_fingerprint:
+label knife_fingerprint_1:
+    s "TEST: peter painter's fingerprint"
+    if analyzed["knife fingerprint"]:
+        $ tools["magnetic powder"] = False
+        scene inspect_knife
+        s "You've already analyzed this print."
+        jump crimescene
+    $ analyzing["knife fingerprint"] = True
+    scene inspect_knife
+    call screen toolbox
+
+label knife_fingerprint_2:
+    s "TEST: emily exgirlfriend's fingerprint"
     if analyzed["knife fingerprint"]:
         $ tools["magnetic powder"] = False
         scene inspect_knife

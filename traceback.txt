@@ -1,28 +1,26 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/scripts/script.rpy", line 222, in script
-    call screen outside_room
-ScriptError: could not find label 'investigation_loop'.
+  File "game/scripts/script.rpy", line 254, in script
+    $ result = _result
+  File "game/scripts/script.rpy", line 254, in <module>
+    $ result = _result
+NameError: name '_result' is not defined
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\bootstrap.py", line 359, in bootstrap
-    renpy.main.main()
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\main.py", line 652, in main
-    run(restart)
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\main.py", line 148, in run
-    renpy.execution.run_context(True)
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\execution.py", line 958, in run_context
-    context.run()
-  File "game/scripts/script.rpy", line 222, in script
-    call screen outside_room
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\script.py", line 1103, in lookup
-    raise ScriptError("could not find label '%s'." % str(original))
-ScriptError: could not find label 'investigation_loop'.
+  File "game/scripts/script.rpy", line 254, in script
+    $ result = _result
+  File "C:\Users\olivi\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 834, in execute
+    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
+  File "C:\Users\olivi\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1187, in py_exec_bytecode
+    exec(bytecode, globals, locals)
+  File "game/scripts/script.rpy", line 254, in <module>
+    $ result = _result
+NameError: name '_result' is not defined
 
-Windows-10-10.0.19045 AMD64
+Windows-10-10.0.26100 AMD64
 Ren'Py 8.3.7.25031702
 The Studio 1.0
-Thu Jul  3 23:50:30 2025
+Fri Jul  4 11:01:41 2025

@@ -206,16 +206,15 @@ label start:
 label begin:
     scene outside_room
     show nina normal at right
-
-    # s "Good evening, investigator."
-    # show nina talk at right
-    # s "We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment."
-    # show nina write at right
-    # s "His neighbours claim to have heard a heated argument at around 6pm with a woman, and went to check up on him later at 10pm, only to find him dead."
-    # s "There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit."
-    # show nina think at right
-    # s "We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene."
-    # show nina normal at right
+    s "Good evening, investigator."
+    show nina talk at right
+    s "We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment."
+    show nina write at right
+    s "His neighbours claim to have heard a heated argument at around 6pm with a woman, Emily Exgirlfriend, and went to check up on him later at 10pm, only to find him dead."
+    s "There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit."
+    show nina think at right
+    s "We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene."
+    show nina normal at right
     s "You may enter whenever you’re ready."
     window hide
 
@@ -243,42 +242,65 @@ label toolbox_init:
 label crimescene:
     scene room
     $ default_mouse = "magnifying"
-    default crimescene_result = None
+    call screen crimescene
+    jump investigation_loop
 
+label investigation_loop:
     if all(analyzed.values()):
         jump finish_investigation
 
-    while True:
-        $ crimescene_result = None
-        show screen crimescene_overlay
+    call screen crimescene
+    $ result = _return
 
-        while crimescene_result is None:
-            $ renpy.pause(0.1)
+    if result == "knife":
+        call click_knife
+    elif result == "canvas":
+        call click_canvas
+    elif result == "laptop":
+        call click_laptop
+    elif result == "letters":
+        call click_letters
+    elif result == "stool":
+        call click_stool
+    elif result == "table":
+        call click_table
+    elif result == "drawer":
+        call click_drawer
 
-        hide screen crimescene_overlay
-        $ result = crimescene_result
+    call investigation_loop
 
-        if result == "knife":
-            call click_knife
-        elif result == "canvas":
-            call click_canvas
-        elif result == "laptop":
-            call click_laptop
-        elif result == "letters":
-            call click_letters
-        elif result == "stool":
-            call click_stool
-        elif result == "table":
-            call click_table
-        elif result == "drawer":
-            call click_drawer
+
+# label investigation_loop:
+#     # $ crimescene_result = None
+#     show screen crimescene_overlay
+
+#     # while crimescene_result is None:
+#     #     $ renpy.pause(0.1)
+
+#     $ result = crimescene_result
+#     # hide screen crimescene_overlay
+
+#     if result == "knife":
+#         call click_knife
+#     elif result == "canvas":
+#         call click_canvas
+#     elif result == "laptop":
+#         call click_laptop
+#     elif result == "letters":
+#         call click_letters
+#     elif result == "stool":
+#         call click_stool
+#     elif result == "table":
+#         call click_table
+#     elif result == "drawer":
+#         call click_drawer
+
+#     jump investigation_loop
 
 label go_to_scene():
-    s "We're at the crime scene now."
-    scene room
-    show screen full_inventory
-    call crimescene
-    return
+    # s "We're at the crime scene now."
+    jump crimescene
+    # return
 
 label finish_investigation:
     $ hide_all_inventory()
@@ -291,7 +313,7 @@ label click_laptop:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
-    show screen inspect_laptop
+    call screen inspect_laptop
 
     # s "It seems his laptop has been left open, let's take a look at the messages. (click)"
 
@@ -302,7 +324,7 @@ label click_letters:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
-    show screen inspect_letters
+    call screen inspect_letters
     
     # s "Letters from someone named 'Emily'? I wonder why he has them on his wall."
     
@@ -313,7 +335,7 @@ label click_drawer:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
-    show screen inspect_drawer
+    call screen inspect_drawer
 
     # s "A drawer, it looks like there's a shrine of someone, and some dead roses?"
 

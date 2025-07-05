@@ -377,73 +377,127 @@ screen tape_to_bag():
             dragged item_dragged_package
 
 # Backgrounds -------------------------------------------------------------------------------------------
-
-screen crimescene_overlay():
+screen crimescene():
     zorder 0
     # modal True
 
-    add "images/backgrounds/room.png"
+    add "backgrounds/room.png"
 
     imagebutton:
         idle "images/objects/knife.png"
         hover "images/objects/hover/knife.png"
         xpos 200
         ypos 900
-        action SetVariable("crimescene_result", "knife")
+        action Return("knife")
     
     imagebutton:
         idle "images/objects/canvas.png"
         hover "images/objects/hover/canvas.png"
         xpos 200
         ypos 200
-        action SetVariable("crimescene_result", "canvas")
+        action Return("canvas")
 
     imagebutton:
         idle "images/objects/letters.png"
         hover "images/objects/hover/letters.png"
         xpos 1050
         ypos 250
-        action SetVariable("crimescene_result", "letters")
+        action Return("letters")
 
     imagebutton:
         idle "images/objects/stool.png"
         hover "images/objects/hover/stool.png"
         xpos 300
         ypos 700
-        action SetVariable("crimescene_result", "stool")
+        action Return("stool")
 
     imagebutton:
         idle "images/objects/table.png"
         hover "images/objects/hover/table.png"
         xpos 1130
         ypos 575
-        action SetVariable("crimescene_result", "table")
+        action Return("table")
 
     imagebutton:
         idle "images/objects/laptop.png"
         hover "images/objects/hover/laptop.png"
         xpos 1215
         ypos 390
-        action SetVariable("crimescene_result", "laptop")
+        action Return("laptop")
 
     imagebutton:
         idle "images/objects/drawer.png"
         hover "images/objects/hover/drawer.png"
         xpos 915
         ypos 415
-        action SetVariable("crimescene_result", "drawer")
+        action Return("drawer")
 
     showif encountered["canvas"]:
         add "marker 1" at Transform(xpos=0.06, ypos=0.76, zoom= 0.32)
     
     showif encountered["knife"]:
-        add "marker 2" at Transform(xpos=0.18, ypos=0.89, zoom=0.3)
+        add "marker 2" at Transform(xpos=0.16, ypos=0.87, zoom=0.3)
     
     showif encountered["stool"]:
-        add "marker 3" at Transform(xpos=0.6, ypos=0.83, zoom=0.33)
+        add "marker 3" at Transform(xpos=0.55, ypos=0.83, zoom=0.33)
 
     showif encountered["table"]:
         add "marker 4" at Transform(xpos=0.81, ypos=0.88, zoom=0.33)
+
+# screen crimescene_overlay():
+#     zorder 0
+#     # modal True
+
+#     # add "images/backgrounds/room.png"
+
+#     imagebutton:
+#         idle "images/objects/knife.png"
+#         hover "images/objects/hover/knife.png"
+#         xpos 200
+#         ypos 900
+#         action SetVariable("crimescene_result", "knife")
+    
+#     imagebutton:
+#         idle "images/objects/canvas.png"
+#         hover "images/objects/hover/canvas.png"
+#         xpos 200
+#         ypos 200
+#         action SetVariable("crimescene_result", "canvas")
+
+#     imagebutton:
+#         idle "images/objects/letters.png"
+#         hover "images/objects/hover/letters.png"
+#         xpos 1050
+#         ypos 250
+#         action SetVariable("crimescene_result", "letters")
+
+#     imagebutton:
+#         idle "images/objects/stool.png"
+#         hover "images/objects/hover/stool.png"
+#         xpos 300
+#         ypos 700
+#         action SetVariable("crimescene_result", "stool")
+
+#     imagebutton:
+#         idle "images/objects/table.png"
+#         hover "images/objects/hover/table.png"
+#         xpos 1130
+#         ypos 575
+#         action SetVariable("crimescene_result", "table")
+
+#     imagebutton:
+#         idle "images/objects/laptop.png"
+#         hover "images/objects/hover/laptop.png"
+#         xpos 1215
+#         ypos 390
+#         action SetVariable("crimescene_result", "laptop")
+
+#     imagebutton:
+#         idle "images/objects/drawer.png"
+#         hover "images/objects/hover/drawer.png"
+#         xpos 915
+#         ypos 415
+#         action SetVariable("crimescene_result", "drawer")
     
     
 
@@ -466,12 +520,12 @@ screen dark_overlay_with_mouse():
 
     imagemap:
         idle "images/backgrounds/inspect_knife_fingerprint.png"
-        hover "images/backgrounds/inspect_knife_fingerprint.png"
+        # hover "images/backgrounds/inspect_knife_fingerprint.png"
         # fingerprint 1
-        hotspot (1091, 627, 87, 84) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("knife_fingerprint")]
+        hotspot (1091, 627, 87, 84) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("knife_fingerprint_1")]
         
         # fingerprint 2
-        hotspot (1268, 650, 69, 77) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("knife_fingerprint")]
+        hotspot (1268, 650, 69, 77) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("knife_fingerprint_2")]
 
     # Adding the darkness overlay with the current mouse position
     add "darkness" pos mouse anchor (0.5, 0.5)
@@ -484,36 +538,32 @@ screen outside_room():
         hover "images/objects/hover/door.png"
         xpos 750
         ypos 125
-        action [Hide("outside_room"), Jump("crimescene")]
+        action [Hide("outside_room"), Jump("investigation_loop")]
 
 screen inspect_canvas():
     add "images/backgrounds/inspect_canvas.png" xpos 700 ypos 50
 
-    textbutton "Back" xpos 1800 ypos 1000 action Return()
+    textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")#Hide("inspect_canvas")
 
 screen inspect_knife():
     add "images/backgrounds/inspect_knife.png" xpos 600 ypos 200
 
-    imagebutton:
-        idle Solid("#ffffffff")
-        xpos 600 ypos 500 xsize 200 ysize 200
-
-    textbutton "Back" xpos 1800 ypos 1000 action Return()
+    textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")#Hide("inspect_knife")
 
 screen inspect_table():
-    add "iimages/backgrounds/inspect_table.png" xpos 600 ypos 200
+    add "images/backgrounds/inspect_table.png" xpos 600 ypos 200
 
-    textbutton "Back" xpos 1800 ypos 1000 action Return()
+    textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")#Hide("inspect_table")
 
 screen inspect_letters():
-    add "images/backgrounds/inspect_letters.png" xpos 600 ypos 100
+    add "images/backgrounds/inspect_letters.png" xpos 10 ypos 10
 
-    textbutton "Back" xpos 1800 ypos 1000 action Return()
+    textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")#Hide("inspect_letters")
 
 screen inspect_stool():
     add "images/backgrounds/inspect_stool.png" xpos 600 ypos 500
 
-    textbutton "Back" xpos 1800 ypos 1000 action Return()
+    textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")#Hide("inspect_stool")
 
 # Interactibles  -------------------------------------------------------------------------------------------
 
@@ -522,7 +572,7 @@ default current_tab = "emily"
 screen inspect_laptop():
     $ default_mouse = "cursor"
 
-    add "images/backgrounds/inspect_laptop.png"
+    add "images/backgrounds/inspect_laptop.png" 
 
     if current_tab == "emily":
         add "images/backgrounds/laptop_emily.png"
@@ -549,7 +599,7 @@ screen inspect_laptop():
         xpos 336 ypos 539 xsize 230 ysize 130
         action SetVariable("current_tab", "mom")
 
-    textbutton "Back" xpos 1800 ypos 1000 action Hide("inspect_laptop")
+    textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")#Hide("inspect_laptop")
 
 default drawer_open = False
 
@@ -566,4 +616,4 @@ screen inspect_drawer():
             hover Solid("#ffffff1e")
             xpos 790 ypos 603 xsize 335 ysize 134
             action SetVariable("drawer_open", True)
-        textbutton "Back" xpos 1800 ypos 1000 action Hide("inspect_drawer")
+        textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")#Hide("inspect_drawer")

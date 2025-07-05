@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/scripts/custom_screens.rpy", line 382: expected 'image_name_component' not found.
-    scene "images/backgrounds/room.png"
-          ^
+File "game/scripts/inventory.rpy", line 85: invalid syntax
+            s "You put on gloves."
+               ^
 
 Ren'Py Version: Ren'Py 8.3.7.25031702
-Thu Jul  3 23:41:02 2025
+Fri Jul  4 11:41:35 2025
