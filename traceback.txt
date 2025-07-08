@@ -1,26 +1,28 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/scripts/script.rpy", line 254, in script
-    $ result = _result
-  File "game/scripts/script.rpy", line 254, in <module>
-    $ result = _result
-NameError: name '_result' is not defined
+  File "game/scripts/print_analysis.rpy", line 18, in script
+    if analyzed["knife fingerprint alt"]:
+  File "game/scripts/print_analysis.rpy", line 18, in <module>
+    if analyzed["knife fingerprint alt"]:
+KeyError: 'knife fingerprint alt'
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/scripts/script.rpy", line 254, in script
-    $ result = _result
-  File "C:\Users\olivi\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 834, in execute
-    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
-  File "C:\Users\olivi\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1187, in py_exec_bytecode
-    exec(bytecode, globals, locals)
-  File "game/scripts/script.rpy", line 254, in <module>
-    $ result = _result
-NameError: name '_result' is not defined
+  File "game/scripts/print_analysis.rpy", line 18, in script
+    if analyzed["knife fingerprint alt"]:
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 1856, in execute
+    if renpy.python.py_eval(condition):
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1218, in py_eval
+    return py_eval_bytecode(code, globals, locals)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1211, in py_eval_bytecode
+    return eval(bytecode, globals, locals)
+  File "game/scripts/print_analysis.rpy", line 18, in <module>
+    if analyzed["knife fingerprint alt"]:
+KeyError: 'knife fingerprint alt'
 
-Windows-10-10.0.26100 AMD64
+Windows-10-10.0.19045 AMD64
 Ren'Py 8.3.7.25031702
 The Studio 1.0
-Fri Jul  4 11:01:41 2025
+Tue Jul  8 18:02:49 2025

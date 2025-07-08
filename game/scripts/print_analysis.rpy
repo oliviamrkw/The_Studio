@@ -1,12 +1,10 @@
 """
-This file has all labels and functions related to the fingerprint and handprint analysis.
-It also contains labels related to packaging the fingerprint, handprint, and gin bottle.
+This file has all labels and functions related to fingerprints.
 """
 
 label knife_fingerprint_1:
-    s "TEST: peter painter's fingerprint"
     if analyzed["knife fingerprint"]:
-        $ tools["magnetic powder"] = False
+        $ tools["silver granular powder"] = False
         scene inspect_knife
         s "You've already analyzed this print."
         jump crimescene
@@ -15,53 +13,73 @@ label knife_fingerprint_1:
     call screen toolbox
 
 label knife_fingerprint_2:
-    s "TEST: emily exgirlfriend's fingerprint"
-    if analyzed["knife fingerprint"]:
-        $ tools["magnetic powder"] = False
+    if analyzed["knife fingerprint alt"]:
+        $ tools["silver granular powder"] = False
         scene inspect_knife
         s "You've already analyzed this print."
         jump crimescene
-    $ analyzing["knife fingerprint"] = True
+    $ analyzing["knife fingerprint alt"] = True
     scene inspect_knife
     call screen toolbox
 
 label fingerprint_dusted:
-    $ encountered["knife fingerprint"] = True
-    scene inspect_knife
+    $ encountered["knife"] = True
+    if analyzing["knife fingerprint"]:
+        scene fingerprint dusted
+    elif analyzing["knife fingerprint alt"]:
+        scene fingerprint dusted alt
     "New photo added to evidence."
     call screen toolbox
 
 label fingerprint_scalebar:
-    scene fingerprint scalebar
+    if analyzing["knife fingerprint"]:
+        scene fingerprint scalebar
+    elif analyzing["knife fingerprint alt"]:
+        scene fingerprint scalebar alt
     call screen toolbox
     
 label fingerprint_taped:
-    scene fingerprint taped
+    if analyzing["knife fingerprint"]:
+        scene fingerprint taped
+    elif analyzing["knife fingerprint alt"]:
+        scene fingerprint taped alt
     call screen toolbox
 
 label fingerprint_backing:
-    scene fingerprint backing
-    call screen toolbox
-
-label packaging:
-    scene door dark
-    $ tools["bag"] = True
     if analyzing["knife fingerprint"]:
-        show backing fingerprint at Transform(xpos=0.3, ypos=0.2, zoom=1.6)
-    
+        scene fingerprint backing
+    elif analyzing["knife fingerprint alt"]:
+        scene fingerprint backing alt
     python:
-        removal_list = ["uv_light", "magnetic_powder", "scalebar", "tape", "backing_card", "gel_lifter"]
+        removal_list = ["swab_back", "uv_light", "magnetic_powder", "silver_granular_powder", "scalebar", "tape", "backing_card", "gel_lifter"]
         for item in removal_list:
             if item in toolbox_items:
                 removeToolboxItem(toolbox_sprites[toolbox_items.index(item)])
+    $ addToToolbox(["evidence_bag", "tube", "tamper_evident_tape"])
+    call screen toolbox
 
-    $ addToToolbox(["tube", "tamper_evident_tape"])
+label packaging:
+    if analyzing["knife fingerprint"]:
+        scene fingerprint dusted
+    elif analyzing["knife fingerprint alt"]:
+        scene fingerprint dusted alt
+    $ tools["bag"] = True
+    if analyzing["knife"]:
+        show backing fingerprint at Transform(xpos=0.3, ypos=0.2, zoom=1.6)
+    
+    # python:
+    #     removal_list = ["uv_light", "magnetic_powder", "silver granular powder", "scalebar", "tape", "backing_card", "gel_lifter"]
+    #     for item in removal_list:
+    #         if item in toolbox_items:
+    #             removeToolboxItem(toolbox_sprites[toolbox_items.index(item)])
+
+    # $ addToToolbox(["evidence_bag", "tube", "tamper_evident_tape"])
     call screen toolbox
 
 label packaging_1:
-    hide backing fingerprint
-    hide backing handprint
-    if analyzing["knife fingerprint"]:
+    show inspect_knife
+    # hide backing handprint
+    if analyzing["knife"]:
         call screen fingerprint_to_bag
     $ tools["bag"] = False
     show evidence bag large at Transform(xpos=0.4, ypos=0.15)
@@ -75,8 +93,9 @@ label packaging_2:
 label packaging_3:
     show casefile_evidence_idle at Transform(xpos=0.3, ypos=0.24)
     "The fingerprint has been added to your evidence."
-    $ analyzing["knife fingerprint"] = False
-    $ analyzed["knife fingerprint"] = True
+    $ analyzing["knife"] = False
+    $ analyzing["knife fingerprint"] = True
+    $ analyzed["knife fingerprint alt"] = True
     $ addToInventory(["fingerprint"])
 
     hide casefile_evidence_idle

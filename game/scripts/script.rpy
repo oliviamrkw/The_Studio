@@ -1,9 +1,6 @@
 ﻿define s = Character(name=("Nina"), image="nina")
 
 init python:
-    inspected_objects = set()
-    ALL_OBJECTS = {"knife", "canvas", "letters", "stool", "table", "laptop", "drawer"}
-
     # Defines all mouse cursors used in the game
     config.mouse = {
         "default": [("images/ui/cursors/cursor.png", 0, 0)],
@@ -20,8 +17,9 @@ init python:
     
     # Used for tool sensitivity in the toolbox screens defined in custom_screens.rpy
     tools = {
-        "uv light": True,
+        "uv light": False,
         "magnetic powder": False,
+        "silver granular powder": False,
         "scalebar": False,
         "gel lifter": False,
         "tape": False,
@@ -36,6 +34,8 @@ init python:
     # Used to keep track of player's progress in the game
     analyzing = {
         "knife": False,
+        "knife fingerprint": False,
+        "knife fingerprint alt": False,
         "canvas": False,
         "stool": False,
         "table": False,
@@ -50,9 +50,11 @@ init python:
         "splatter presumptive": False,
         "splatter packaged": False,
         "knife fingerprint": False,
+        "knife fingerprint alt": False,
         "knife presumptive": False,
         "knife packaged": False,
         "knife fingerprint packaged": False,
+        "knife fingerprint alt packaged": False,
         "table presumptive": False,
         "table packaged": False,
     }
@@ -205,18 +207,18 @@ label start:
 
 label begin:
     scene outside_room
-    show nina normal at right
-    s "Good evening, investigator."
-    show nina talk at right
-    s "We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment."
-    show nina write at right
-    s "His neighbours claim to have heard a heated argument at around 6pm with a woman, Emily Exgirlfriend, and went to check up on him later at 10pm, only to find him dead."
-    s "There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit."
-    show nina think at right
-    s "We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene."
+    # show nina normal at right
+    # s "Good evening, investigator."
+    # show nina talk at right
+    # s "We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment."
+    # show nina write at right
+    # s "His neighbours claim to have heard a heated argument at around 6pm with a woman, Emily Exgirlfriend, and went to check up on him later at 10pm, only to find him dead."
+    # s "There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit."
+    # show nina think at right
+    # s "We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene."
     show nina normal at right
     s "You may enter whenever you’re ready."
-    window hide
+    # window hide
 
     call screen outside_room
     # $ renpy.pause(hard=True)
@@ -229,7 +231,7 @@ label toolbox_init:
         addToInventory(["hydrogen"])
         addToInventory(["uv light"])
         addToInventory(["magnetic powder"])
-        # addToInventory(["silver granular powder"])
+        addToInventory(["silver granular powder"])
         addToInventory(["scalebar"])
         addToInventory(["gel lifter"])
         addToInventory(["tape"])
@@ -243,31 +245,31 @@ label crimescene:
     scene room
     $ default_mouse = "magnifying"
     call screen crimescene
-    jump investigation_loop
+    # jump investigation_loop
 
-label investigation_loop:
-    if all(analyzed.values()):
-        jump finish_investigation
+# label investigation_loop:
+#     if all(analyzed.values()):
+#         jump finish_investigation
 
-    call screen crimescene
-    $ result = _return
+    # call screen crimescene
+    # $ result = _return
 
-    if result == "knife":
-        call click_knife
-    elif result == "canvas":
-        call click_canvas
-    elif result == "laptop":
-        call click_laptop
-    elif result == "letters":
-        call click_letters
-    elif result == "stool":
-        call click_stool
-    elif result == "table":
-        call click_table
-    elif result == "drawer":
-        call click_drawer
+    # if result == "knife":
+    #     call click_knife
+    # elif result == "canvas":
+    #     call click_canvas
+    # elif result == "laptop":
+    #     call click_laptop
+    # elif result == "letters":
+    #     call click_letters
+    # elif result == "stool":
+    #     call click_stool
+    # elif result == "table":
+    #     call click_table
+    # elif result == "drawer":
+    #     call click_drawer
 
-    call investigation_loop
+    # call investigation_loop
 
 
 # label investigation_loop:

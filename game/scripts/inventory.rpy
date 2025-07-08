@@ -48,39 +48,40 @@ init python:
             if analyzing["knife"]: # analyzing fingerprint
                 tools["scalebar"] = True
                 renpy.jump("fingerprint_dusted")
+        elif item == "silver_granular_powder" and tools["silver granular powder"]:
+            tools["silver granular powder"] = False
+            hide_all_inventory()
+            if analyzing["knife"]: # analyzing fingerprint
+                tools["scalebar"] = True
+                renpy.jump("fingerprint_dusted")
         elif item == "scalebar" and tools["scalebar"]:
             tools["scalebar"] = False
             hide_all_inventory()
             tools["tape"] = True
-            # if analyzing["handprint"]:
-            #     renpy.jump("handprint_scalebar")
-            # else:
-            renpy.jump("fingerprint_scalebar")
+            if analyzing["knife"]:
+                renpy.jump("fingerprint_scalebar")
+            else:
+                renpy.jump("fingerprint_scalebar")
         elif item == "tape" and tools["tape"]:
             tools["tape"] = False
             hide_all_inventory()
             tools["backing"] = True
-            # if analyzing["handprint"]:
-            #     renpy.jump("handprint_taped")
-            # else:
             renpy.jump("fingerprint_taped")
         elif item == "backing_card" and tools["backing"]:
             tools["backing"] = False
             hide_all_inventory()
             tools["packaging"] = True
-            if analyzing["handprint"]:
-                renpy.jump("handprint_backing")
-            else:
+            if analyzing["knife"]:
                 renpy.jump("fingerprint_backing")
-        elif item == "gel_lifter" and tools["gel lifter"]:
-            tools["gel lifter"] = False
-            hide_all_inventory()
-            tools["packaging"] = True
-            renpy.jump("handprint_gel")
+        # elif item == "gel_lifter" and tools["gel lifter"]:
+        #     tools["gel lifter"] = False
+        #     hide_all_inventory()
+        #     tools["packaging"] = True
+        #     renpy.jump("handprint_gel")
         # Splatter ------------------------------
         elif item == "swab_pack" and tools["swab"]:
             # default_mouse = "ethanol"
-            # tools["swab"] = False
+            tools["swab"] = False
             hide_all_inventory()
             if analyzing["canvas"]:
                 renpy.jump("canvas_swab")
@@ -105,14 +106,17 @@ init python:
             if tools["packaging"]:
                 tools["packaging"] = False
                 hide_all_inventory()
+                tools["tamper evident tape"] = True
                 tools["bag"] = True
-                renpy.jump("packaging")
+                renpy.jump("packaging_1")
             elif tools["bag"]:
                 tools["tube"] = False
                 tools["bag"] = False
                 hide_all_inventory()
                 tools["tamper evident tape"] = True
-                if analyzing["stool"] or analyzing["canvas"] or analyzing["knife"] or analyzing["table"]:
+                if analyzing["knife fingerprint"] or analyzing["knife fingerprint alt"]:
+                    renpy.jump("packaging_1")
+                elif analyzing["stool"] or analyzing["canvas"] or analyzing["knife"] or analyzing["table"]:
                     renpy.jump("splatter_packaging_1")
         elif item == "tube" and tools["tube"]:
             tools["tube"] = False
@@ -123,11 +127,10 @@ init python:
         elif item == "tamper_evident_tape" and tools["tamper evident tape"]:
             tools["tamper evident tape"] = False
             hide_all_inventory()
-            if analyzing["stool"] or analyzing["canvas"] or analyzing["knife"] or analyzing["table"]:
-                renpy.jump("splatter_packaging_2")
-            else:
+            if analyzing["knife fingerprint"] or analyzing["knife fingerprint alt"]:
                 renpy.jump("packaging_2")
-        
+            elif analyzing["stool"] or analyzing["canvas"] or analyzing["knife"] or analyzing["table"]:
+                renpy.jump("splatter_packaging_2")               
 
     def inventory_actions(item: str) -> None:
         global location

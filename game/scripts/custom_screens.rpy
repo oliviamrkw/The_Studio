@@ -46,110 +46,110 @@ screen casefile():
             action [ToggleScreen("casefile"), ToggleScreen("casefile_photos")]
     
     
-screen casefile_physical():
-    # This is the screen displayed when the player clicks on the physical evidence.
-    # It shows all evidence collected. When the player clicks on a piece of evidence,
-    # the description of the evidence is displayed on the bottom of the screen.
+# screen casefile_physical():
+#     # This is the screen displayed when the player clicks on the physical evidence.
+#     # It shows all evidence collected. When the player clicks on a piece of evidence,
+#     # the description of the evidence is displayed on the bottom of the screen.
 
-    # NOTE: This screen will not be used in future iterations of the game. This
-    # is a placeholder screen. The inventory that Vivian created will be used instead. 
-    zorder 0
-    modal True
-    add "casefile_inventory.png" at Transform(yzoom=1.1)
-    text "Evidence Collected" xpos 0.42 ypos 0.15
+#     # NOTE: This screen will not be used in future iterations of the game. This
+#     # is a placeholder screen. The inventory that Vivian created will be used instead. 
+#     zorder 0
+#     modal True
+#     add "casefile_inventory.png" at Transform(yzoom=1.1)
+#     text "Evidence Collected" xpos 0.42 ypos 0.15
 
-    hbox:
-        xpos 0.17 ypos 0.1
-        imagebutton:
-            auto "back_button_%s.png" at Transform(zoom=0.2)
-            action [ToggleScreen("casefile_physical"), SetVariable("evidence_desc", ""), ToggleScreen("casefile")]
+#     hbox:
+#         xpos 0.17 ypos 0.1
+#         imagebutton:
+#             auto "back_button_%s.png" at Transform(zoom=0.2)
+#             action [ToggleScreen("casefile_physical"), SetVariable("evidence_desc", ""), ToggleScreen("casefile")]
     
-    showif analyzed["knife fingerprint"]:
-        hbox:
-            # xpos 0.5 ypos 0.24
-            xpos 0.2 ypos 0.24
-            imagebutton:
-                auto "fingerprint %s.png" at Transform(zoom=0.7)
-                action SetVariable("evidence_desc", "This is the fingerprint we gathered from the knife on the ground.")
+#     showif analyzed["knife fingerprint"]:
+#         hbox:
+#             # xpos 0.5 ypos 0.24
+#             xpos 0.2 ypos 0.24
+#             imagebutton:
+#                 auto "fingerprint %s.png" at Transform(zoom=0.7)
+#                 action SetVariable("evidence_desc", "This is the fingerprint we gathered from the knife on the ground.")
 
-    showif analyzed["table packaged"]:
-        hbox:
-            xpos 0.5 ypos 0.24
-            imagebutton:
-                auto "sample footprint %s.png" at Transform(zoom=0.7)
-                action If(analyzed["table packaged"], SetVariable("evidence_desc", "This is blood gathered from the table."), SetVariable("evidence_desc", "This is the red substance gathered from the table. It is unknown what this substance is at the moment."))
+#     showif analyzed["table packaged"]:
+#         hbox:
+#             xpos 0.5 ypos 0.24
+#             imagebutton:
+#                 auto "sample footprint %s.png" at Transform(zoom=0.7)
+#                 action If(analyzed["table packaged"], SetVariable("evidence_desc", "This is blood gathered from the table."), SetVariable("evidence_desc", "This is the red substance gathered from the table. It is unknown what this substance is at the moment."))
 
-    showif analyzed["splatter packaged"]:
-        hbox:
-            xpos 0.65 ypos 0.24
-            imagebutton:
-                auto "sample splatter %s.png" at Transform(zoom=0.7)
-                action If(analyzed["splatter presumptive"], SetVariable("evidence_desc", "This is blood gathered from the splatter on the floor."), SetVariable("evidence_desc", "This is the red substance gathered from the splatter on the floor. It is unknown what this substance is at the moment."))
+#     showif analyzed["splatter packaged"]:
+#         hbox:
+#             xpos 0.65 ypos 0.24
+#             imagebutton:
+#                 auto "sample splatter %s.png" at Transform(zoom=0.7)
+#                 action If(analyzed["splatter presumptive"], SetVariable("evidence_desc", "This is blood gathered from the splatter on the floor."), SetVariable("evidence_desc", "This is the red substance gathered from the splatter on the floor. It is unknown what this substance is at the moment."))
     
-    text "[evidence_desc]" xalign 0.5 ypos 0.79 size 30 xsize 900 color "#fff"
+#     text "[evidence_desc]" xalign 0.5 ypos 0.79 size 30 xsize 900 color "#fff"
 
 
-screen casefile_photos():
-    # This is the screen displayed when the player clicks on the photos. It shows
-    # photos of all evidence collected.
+# screen casefile_photos():
+#     # This is the screen displayed when the player clicks on the photos. It shows
+#     # photos of all evidence collected.
 
-    # NOTE: This screen will not be used in future iterations of the game. This
-    # is a placeholder screen. The inventory that Vivian created will be used instead. 
-    zorder 1
-    modal True
-    add "casefile_inventory.png"
-    text "Evidence Collected" xpos 0.42 ypos 0.15
-    hbox:
-        xpos 0.17 ypos 0.1
-        imagebutton:
-            auto "back_button_%s.png" at Transform(zoom=0.2)
-            action [ToggleScreen("casefile_photos"), ToggleScreen("casefile")]
+#     # NOTE: This screen will not be used in future iterations of the game. This
+#     # is a placeholder screen. The inventory that Vivian created will be used instead. 
+#     zorder 1
+#     modal True
+#     add "casefile_inventory.png"
+#     text "Evidence Collected" xpos 0.42 ypos 0.15
+#     hbox:
+#         xpos 0.17 ypos 0.1
+#         imagebutton:
+#             auto "back_button_%s.png" at Transform(zoom=0.2)
+#             action [ToggleScreen("casefile_photos"), ToggleScreen("casefile")]
 
-    showif encountered["knife"]:
-        hbox:
-            xpos 0.18 ypos 0.22
-            imagebutton:
-                idle "footprint" at Transform(zoom=0.2)
+#     showif encountered["knife"]:
+#         hbox:
+#             xpos 0.18 ypos 0.22
+#             imagebutton:
+#                 idle "footprint" at Transform(zoom=0.2)
 
-    showif encountered["canvas"]:
-        hbox:
-            xpos 0.4 ypos 0.22
-            imagebutton:
-                idle "footprint enhanced" at Transform(zoom=0.2)
+#     showif encountered["canvas"]:
+#         hbox:
+#             xpos 0.4 ypos 0.22
+#             imagebutton:
+#                 idle "footprint enhanced" at Transform(zoom=0.2)
 
-    showif encountered["letters"]:
-        hbox:
-            xpos 0.62 ypos 0.22
-            imagebutton:
-                idle "handprint dusted" at Transform(zoom=0.2)
+#     showif encountered["letters"]:
+#         hbox:
+#             xpos 0.62 ypos 0.22
+#             imagebutton:
+#                 idle "handprint dusted" at Transform(zoom=0.2)
 
-    showif encountered["stool"]:
-        hbox:
-            xpos 0.18 ypos 0.5
-            imagebutton:
-                idle "fingerprint dusted" at Transform(zoom=0.2)
+#     showif encountered["stool"]:
+#         hbox:
+#             xpos 0.18 ypos 0.5
+#             imagebutton:
+#                 idle "fingerprint dusted" at Transform(zoom=0.2)
 
-    showif encountered["table"]:
-        hbox:
-            xpos 0.4 ypos 0.5
-            imagebutton:
-                idle "splatter" at Transform(zoom=0.2)
+#     showif encountered["table"]:
+#         hbox:
+#             xpos 0.4 ypos 0.5
+#             imagebutton:
+#                 idle "splatter" at Transform(zoom=0.2)
 
-    showif encountered["laptop"]:
-        hbox:
-            xpos 0.62 ypos 0.5
-            imagebutton:
-                idle "gin" at Transform(zoom=0.2)
+#     showif encountered["laptop"]:
+#         hbox:
+#             xpos 0.62 ypos 0.5
+#             imagebutton:
+#                 idle "gin" at Transform(zoom=0.2)
     
-    showif encountered["drawer"]:
-        hbox:
-            xpos 0.62 ypos 0.5
-            imagebutton:
-                idle "gin" at Transform(zoom=0.2)
+#     showif encountered["drawer"]:
+#         hbox:
+#             xpos 0.62 ypos 0.5
+#             imagebutton:
+#                 idle "gin" at Transform(zoom=0.2)
 
 # Contents of toolbox --------------------------------------------------------------------------------------
 screen toolbox_print():
-    # This is the toolbox used for the fingerprint and the handprint.
+    # This is the toolbox used for the fingerprint.
     zorder 1
     hbox:
         xpos 0.89 ypos 0.084
@@ -170,13 +170,21 @@ screen toolbox_print():
     hbox:
         xpos 0.885 ypos 0.5
         imagebutton:
+            sensitive tools["silver granular powder"]
+            auto "silver_granular_powder_%s.png" at Transform(zoom=0.06)
+            hovered Notify("silver granular powder")
+            action [SetDict(tools, "silver granular powder", False), If(analyzing["knife"], [SetDict(tools, "gel lifter", True), Jump("fingerprint_1_dusted")], [SetDict(tools, "scalebar", True), Jump("fingerprint_1_dusted")])]
+        
+    hbox:
+        xpos 0.88 ypos 0.65
+        imagebutton:
             sensitive tools["scalebar"]
             auto "scalebar_%s.png" at Transform(zoom=0.6)
             hovered Notify("scalebar")
             action [SetDict(tools, "scalebar", False), SetDict(tools, "tape", True), If(analyzing["handprint"], Jump("handprint_scalebar"), Jump("fingerprint_scalebar"))]
-        
+    
     hbox:
-        xpos 0.88 ypos 0.65
+        xpos 0.885 ypos 0.8
         imagebutton:
             sensitive tools["tape"]
             auto "tape_%s.png" at Transform(zoom=1)
@@ -184,28 +192,28 @@ screen toolbox_print():
             action [SetDict(tools, "tape", False), SetDict(tools, "backing", True), If(analyzing["handprint"], Jump("handprint_taped"), Jump("fingerprint_taped"))]
     
     hbox:
-        xpos 0.885 ypos 0.8
+        xpos 0 ypos 0.13
         imagebutton:
             sensitive tools["backing"]
             auto "backing_card_%s.png" at Transform(zoom=0.6)
             hovered Notify("backing card")
-            action [SetDict(tools, "backing", False), SetDict(tools, "packaging", True), If(analyzing["handprint"], Jump("handprint_backing"), Jump("fingerprint_backing"))]
+            action [SetDict(tools, "backing", False), SetDict(tools, "packaging", True), Jump("fingerprint_backing")]
     
     hbox:
-        xpos 0 ypos 0.13
+        xpos 0 ypos 0.34
         imagebutton:
             sensitive tools["packaging"]
             auto "casefile_evidence_%s.png" at Transform(zoom=0.3)
             hovered Notify("packaging")
             action [SetDict(tools, "packaging", False), SetDict(tools, "tube", True), Jump("packaging")]
-    
+
     hbox:
-        xpos 0 ypos 0.34
+        xpos 0 ypos 0.45
         imagebutton:
             sensitive tools["gel lifter"]
             auto "gel_lifter_%s.png" at Transform(zoom=0.35)
             hovered Notify("gel lifter")
-            action [SetDict(tools, "gel lifter", False), SetDict(tools, "packaging", True), Jump("handprint_gel")]
+            action [SetDict(tools, "gel lifter", False), SetDict(tools, "packaging", True)]
 
 screen toolbox_blood():
     # This is the toolbox used for the bloody footprint and the splatter.
@@ -222,10 +230,10 @@ screen toolbox_blood():
             sensitive tools["swab"]
             hovered Notify("swab")
             auto "swab_pack_%s.png" at Transform(zoom=0.8)
-            action If(analyzing["table"], Jump("table_swab"),
-                If(analyzing["splatter"], Jump("splatter_swab"),
-                If(analyzing["knife"], Jump("knife_swab"),
-                If(analyzing["canvas"], Jump("canvas_swab")))))
+            action [SetDict(tools, "swab", False), If(analyzing["table"], Jump("table_swab")),
+                If(analyzing["splatter"], Jump("splatter_swab")),
+                If(analyzing["knife"] and not (analyzing["knife fingerprint"] or analyzing["knife fingerprint alt"]), Jump("knife_swab")),
+                If(analyzing["canvas"], Jump("canvas_swab"))]
 
 screen toolbox_presumptive():
     # This is the toolbox used for the presumptive test.
@@ -276,14 +284,14 @@ screen toolbox_packaging():
             sensitive tools["tube"]
             hovered Notify("tube")
             auto "tube_%s" at Transform(zoom=0.8)
-            action [SetDict(tools, "tube", False), SetDict(tools, "bag", True), If(analyzing["splatter"] or analyzing["knife fingerprint"], Jump("splatter_packaging_0"))]
+            action [SetDict(tools, "tube", False), SetDict(tools, "bag", True), If(analyzing["stool"] or analyzing["knife"], Jump("splatter_packaging_0"))]
     hbox:
         xpos 0.885 ypos 0.32
         imagebutton:
             sensitive tools["bag"]
             auto "evidence_bag_%s" at Transform(zoom=0.9)
             hovered Notify("evidence bag")
-            action [SetDict(tools, "tube", False), SetDict(tools, "bag", False), SetDict(tools, "tamper evident tape", True), If(analyzing["fingerprint"], Jump("packaging_1")), If(analyzing["splatter"], Jump("splatter_packaging_1"))]
+            action [SetDict(tools, "tube", False), SetDict(tools, "bag", False), SetDict(tools, "tamper evident tape", True), If(analyzing["knife"], Jump("packaging_1")), If((analyzing["knife"] or analyzing["canvas"] or analyzing["stool"] or analyzing["table"]), Jump("splatter_packaging_1"))]
     
     hbox:
         xpos 0.885 ypos 0.51
@@ -291,7 +299,7 @@ screen toolbox_packaging():
             sensitive tools["tamper evident tape"]
             hovered Notify("tamper evident tape")
             auto "tamper_evident_tape_%s.png" at Transform(zoom=0.9)
-            action [SetDict(tools, "tamper evident tape", False), If(analyzing["splatter"], Jump("splatter_packaging_2"), Jump("packaging_2"))]
+            action [SetDict(tools, "tamper evident tape", False), If((analyzing["knife fingerprint"] or analyzing["knife fingerprint alt"]), Jump("packaging_2")), If((analyzing["knife"] or analyzing["canvas"] or analyzing["stool"] or analyzing["table"]), Jump("splatter_packaging_2"))]
 
 # Drag and drop screens -------------------------------------------------------------------------------
 
@@ -388,49 +396,49 @@ screen crimescene():
         hover "images/objects/hover/knife.png"
         xpos 200
         ypos 900
-        action Return("knife")
+        action Jump("click_knife")
     
     imagebutton:
         idle "images/objects/canvas.png"
         hover "images/objects/hover/canvas.png"
         xpos 200
         ypos 200
-        action Return("canvas")
+        action Jump("click_canvas")
 
     imagebutton:
         idle "images/objects/letters.png"
         hover "images/objects/hover/letters.png"
         xpos 1050
         ypos 250
-        action Return("letters")
+        action Jump("click_letters")
 
     imagebutton:
         idle "images/objects/stool.png"
         hover "images/objects/hover/stool.png"
         xpos 300
         ypos 700
-        action Return("stool")
+        action Jump("click_stool")
 
     imagebutton:
         idle "images/objects/table.png"
         hover "images/objects/hover/table.png"
         xpos 1130
         ypos 575
-        action Return("table")
+        action Jump("click_table")
 
     imagebutton:
         idle "images/objects/laptop.png"
         hover "images/objects/hover/laptop.png"
         xpos 1215
         ypos 390
-        action Return("laptop")
+        action Jump("click_laptop")
 
     imagebutton:
         idle "images/objects/drawer.png"
         hover "images/objects/hover/drawer.png"
         xpos 915
         ypos 415
-        action Return("drawer")
+        action Jump("click_drawer")
 
     showif encountered["canvas"]:
         add "marker 1" at Transform(xpos=0.06, ypos=0.76, zoom= 0.32)
@@ -443,63 +451,6 @@ screen crimescene():
 
     showif encountered["table"]:
         add "marker 4" at Transform(xpos=0.81, ypos=0.88, zoom=0.33)
-
-# screen crimescene_overlay():
-#     zorder 0
-#     # modal True
-
-#     # add "images/backgrounds/room.png"
-
-#     imagebutton:
-#         idle "images/objects/knife.png"
-#         hover "images/objects/hover/knife.png"
-#         xpos 200
-#         ypos 900
-#         action SetVariable("crimescene_result", "knife")
-    
-#     imagebutton:
-#         idle "images/objects/canvas.png"
-#         hover "images/objects/hover/canvas.png"
-#         xpos 200
-#         ypos 200
-#         action SetVariable("crimescene_result", "canvas")
-
-#     imagebutton:
-#         idle "images/objects/letters.png"
-#         hover "images/objects/hover/letters.png"
-#         xpos 1050
-#         ypos 250
-#         action SetVariable("crimescene_result", "letters")
-
-#     imagebutton:
-#         idle "images/objects/stool.png"
-#         hover "images/objects/hover/stool.png"
-#         xpos 300
-#         ypos 700
-#         action SetVariable("crimescene_result", "stool")
-
-#     imagebutton:
-#         idle "images/objects/table.png"
-#         hover "images/objects/hover/table.png"
-#         xpos 1130
-#         ypos 575
-#         action SetVariable("crimescene_result", "table")
-
-#     imagebutton:
-#         idle "images/objects/laptop.png"
-#         hover "images/objects/hover/laptop.png"
-#         xpos 1215
-#         ypos 390
-#         action SetVariable("crimescene_result", "laptop")
-
-#     imagebutton:
-#         idle "images/objects/drawer.png"
-#         hover "images/objects/hover/drawer.png"
-#         xpos 915
-#         ypos 415
-#         action SetVariable("crimescene_result", "drawer")
-    
-    
 
 screen bloody_swab():
     # This is the screen used to allow the player to add drops of chemicals
@@ -522,10 +473,10 @@ screen dark_overlay_with_mouse():
         idle "images/backgrounds/inspect_knife_fingerprint.png"
         # hover "images/backgrounds/inspect_knife_fingerprint.png"
         # fingerprint 1
-        hotspot (1091, 627, 87, 84) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("knife_fingerprint_1")]
+        hotspot (1091, 627, 87, 84) action [SetDict(tools, "uv light", False), SetDict(tools, "silver granular powder", True), SetDict(analyzing, "knife fingerprint", True), ToggleScreen("dark_overlay_with_mouse"), Jump("knife_fingerprint_1")]
         
         # fingerprint 2
-        hotspot (1268, 650, 69, 77) action [SetDict(tools, "uv light", False), SetDict(tools, "magnetic powder", True), ToggleScreen("dark_overlay_with_mouse"), Jump("knife_fingerprint_2")]
+        hotspot (1268, 650, 69, 77) action [SetDict(tools, "uv light", False), SetDict(tools, "silver granular powder", True), SetDict(analyzing, "knife fingerprint alt", True), ToggleScreen("dark_overlay_with_mouse"), Jump("knife_fingerprint_2")]
 
     # Adding the darkness overlay with the current mouse position
     add "darkness" pos mouse anchor (0.5, 0.5)
@@ -538,7 +489,7 @@ screen outside_room():
         hover "images/objects/hover/door.png"
         xpos 750
         ypos 125
-        action [Hide("outside_room"), Jump("investigation_loop")]
+        action [Hide("outside_room"), Jump("crimescene")]
 
 screen inspect_canvas():
     add "images/backgrounds/inspect_canvas.png" xpos 700 ypos 50
