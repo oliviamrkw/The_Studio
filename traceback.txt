@@ -1,28 +1,81 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/scripts/print_analysis.rpy", line 18, in script
-    if analyzed["knife fingerprint alt"]:
-  File "game/scripts/print_analysis.rpy", line 18, in <module>
-    if analyzed["knife fingerprint alt"]:
-KeyError: 'knife fingerprint alt'
+  File "game/scripts/script.rpy", line 272, in script
+    call screen crimescene
+  File "renpy/common/000statements.rpy", line 671, in execute_call_screen
+    store._return = renpy.call_screen(name, *args, **kwargs)
+  File "game/scripts/custom_screens.rpy", line 626, in execute
+    screen progress_counter():
+  File "game/scripts/custom_screens.rpy", line 626, in execute
+    screen progress_counter():
+  File "game/scripts/custom_screens.rpy", line 627, in execute
+    frame:
+  File "game/scripts/custom_screens.rpy", line 632, in execute
+    text "Remaining tasks: [remaining_count]" size 30 color "#fff"
+NameError: name 'remaining_count' is not defined
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/scripts/print_analysis.rpy", line 18, in script
-    if analyzed["knife fingerprint alt"]:
-  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 1856, in execute
-    if renpy.python.py_eval(condition):
+  File "game/scripts/script.rpy", line 272, in script
+    call screen crimescene
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 1987, in execute
+    self.call("execute")
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ast.py", line 1966, in call
+    return renpy.statements.call(method, parsed, *args, **kwargs)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\statements.py", line 374, in call
+    return method(parsed, *args, **kwargs)
+  File "renpy/common/000statements.rpy", line 671, in execute_call_screen
+    store._return = renpy.call_screen(name, *args, **kwargs)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\exports\statementexports.py", line 345, in call_screen
+    rv = renpy.ui.interact(mouse="screen", type="screen", roll_forward=roll_forward)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\ui.py", line 301, in interact
+    rv = renpy.game.interface.interact(roll_forward=roll_forward, **kwargs)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\core.py", line 2218, in interact
+    repeat, rv = self.interact_core(preloads=preloads, trans_pause=trans_pause, pause=pause, pause_start=pause_start, pause_modal=pause_modal, **kwargs) # type: ignore
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\core.py", line 2748, in interact_core
+    root_widget.visit_all(lambda d : d.per_interact())
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\displayable.py", line 434, in visit_all
+    d.visit_all(callback, seen)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\displayable.py", line 434, in visit_all
+    d.visit_all(callback, seen)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\displayable.py", line 434, in visit_all
+    d.visit_all(callback, seen)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\screen.py", line 480, in visit_all
+    callback(self)
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\core.py", line 2748, in <lambda>
+    root_widget.visit_all(lambda d : d.per_interact())
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\screen.py", line 491, in per_interact
+    self.update()
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\display\screen.py", line 700, in update
+    self.screen.function(**self.scope)
+  File "game/scripts/custom_screens.rpy", line 626, in execute
+    screen progress_counter():
+  File "game/scripts/custom_screens.rpy", line 626, in execute
+    screen progress_counter():
+  File "game/scripts/custom_screens.rpy", line 627, in execute
+    frame:
+  File "game/scripts/custom_screens.rpy", line 632, in execute
+    text "Remaining tasks: [remaining_count]" size 30 color "#fff"
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\text\text.py", line 2079, in __init__
+    self.set_text(text, scope, substitute) # type: ignore
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\text\text.py", line 2216, in set_text
+    i, did_sub = renpy.substitutions.substitute(i, scope, substitute) # type: ignore
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\substitutions.py", line 373, in substitute
+    s = interpolate(s, variables) # type: ignore
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\substitutions.py", line 86, in interpolate
+    raise e
+  File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\substitutions.py", line 78, in interpolate
+    value = renpy.python.py_eval(code, {}, scope)
   File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1218, in py_eval
     return py_eval_bytecode(code, globals, locals)
   File "C:\Users\olivia\Downloads\renpy-8.3.7-sdk\renpy\python.py", line 1211, in py_eval_bytecode
     return eval(bytecode, globals, locals)
-  File "game/scripts/print_analysis.rpy", line 18, in <module>
-    if analyzed["knife fingerprint alt"]:
-KeyError: 'knife fingerprint alt'
+  File "<none>", line 1, in <module>
+NameError: name 'remaining_count' is not defined
 
 Windows-10-10.0.19045 AMD64
 Ren'Py 8.3.7.25031702
 The Studio 1.0
-Tue Jul  8 18:02:49 2025
+Thu Jul 10 17:01:04 2025

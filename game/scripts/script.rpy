@@ -28,7 +28,9 @@ init python:
         "tube": False,
         "bag": False,
         "tamper evident tape": False,
-        "swab": True
+        "swab": True,
+        "folder": True,
+        "letters": True
     }
 
     # Used to keep track of player's progress in the game
@@ -39,6 +41,8 @@ init python:
         "canvas": False,
         "stool": False,
         "table": False,
+        "folder": False,
+        "letters": False,
     }
 
     # Used to keep track of what evidence has been analyzed
@@ -52,11 +56,10 @@ init python:
         "knife fingerprint": False,
         "knife fingerprint alt": False,
         "knife presumptive": False,
-        "knife packaged": False,
-        "knife fingerprint packaged": False,
-        "knife fingerprint alt packaged": False,
         "table presumptive": False,
         "table packaged": False,
+        "folder": False,
+        "letters": False
     }
 
     # Used to keep track of what evidence has been encountered
@@ -120,6 +123,8 @@ init python:
         renpy.hide_screen("sample_to_tube")
         renpy.hide_screen("fingerprint_to_bag")
         renpy.hide_screen("tape_to_bag")
+        renpy.hide_screen("folder_to_bag")
+        renpy.hide_screen("letters_to_bag")
         default_mouse = "default"
         return True
     
@@ -135,6 +140,20 @@ init python:
             renpy.hide_screen("casefile")
         else:
             renpy.show_screen("casefile")
+
+    def get_progress():
+        remaining = sum(1 for e in analyzed.values() if not e)
+        return remaining
+
+    def update_progress():
+        store.remaining_count = get_progress()
+        renpy.hide_screen("progress_counter")
+        renpy.show_screen("progress_counter")
+
+    def remove_tools_from_toolbox(tools_to_remove):
+        for item in tools_to_remove:
+            if item in toolbox_items:
+                removeToolboxItem(toolbox_sprites[toolbox_items.index(item)])
 
 label start:
     $ default_mouse = "magnifying"
@@ -183,7 +202,6 @@ label start:
     $toolboxpop_SM = SpriteManager(update = toolboxPopUpdate, event = toolboxPopupEvents) # sprite manager that manages toolbox pop-up items; triggers function toolboxPopUpdate
     $toolboxpop_sprites = [] # holds all toolbox pop-up sprite objects
     $toolboxpop_items = [] # holds toolbox pop-up items
-    # $toolboxpop_item_names = ["Tape", "Ziploc bag", "Jar in bag", "Tape in bag", "Gun all", "Empty gun", "Cartridges", "Gun with cartridges", "Tip", "Pvs in bag"] # holds names for inspect pop-up text 
     $toolboxpop_db_enabled = False # determines whether up arrow on toolbox pop-up hotbar is enabled or not
     $toolboxpop_ub_enabled = False # determines whether down arrow on toolbox pop-up hotbar is enabled or not
     $toolboxpop_slot_size = (100, 100) # sets slot size for toolbox pop-up bar
@@ -207,21 +225,25 @@ label start:
 
 label begin:
     scene outside_room
-    # show nina normal at right
-    # s "Good evening, investigator."
-    # show nina talk at right
-    # s "We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment."
-    # show nina write at right
-    # s "His neighbours claim to have heard a heated argument at around 6pm with a woman, Emily Exgirlfriend, and went to check up on him later at 10pm, only to find him dead."
-    # s "There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit."
-    # show nina think at right
-    # s "We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene."
     show nina normal at right
+    voice "line1.mp3"
+    s "Good evening, investigator."
+    show nina talk at right
+    voice "line2.mp3"
+    s "We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment."
+    show nina write at right
+    voice "line3.mp3"
+    s "His neighbours claim to have heard a heated argument at around 6pm with a woman, Emily Exgirlfriend, and went to check up on him later at 10pm, only to find him dead."
+    voice "line4.mp3"
+    s "There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit."
+    show nina think at right
+    voice "line5.mp3"
+    s "We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene."
+    show nina normal at right
+    voice "line6.mp3"
     s "You may enter whenever you’re ready."
-    # window hide
 
     call screen outside_room
-    # $ renpy.pause(hard=True)
 
 label toolbox_init:
     python:
@@ -244,106 +266,20 @@ label toolbox_init:
 label crimescene:
     scene room
     $ default_mouse = "magnifying"
+    $ remaining_count = get_progress()
+    show screen progress_counter
     call screen crimescene
-    # jump investigation_loop
-
-# label investigation_loop:
-#     if all(analyzed.values()):
-#         jump finish_investigation
-
-    # call screen crimescene
-    # $ result = _return
-
-    # if result == "knife":
-    #     call click_knife
-    # elif result == "canvas":
-    #     call click_canvas
-    # elif result == "laptop":
-    #     call click_laptop
-    # elif result == "letters":
-    #     call click_letters
-    # elif result == "stool":
-    #     call click_stool
-    # elif result == "table":
-    #     call click_table
-    # elif result == "drawer":
-    #     call click_drawer
-
-    # call investigation_loop
-
-
-# label investigation_loop:
-#     # $ crimescene_result = None
-#     show screen crimescene_overlay
-
-#     # while crimescene_result is None:
-#     #     $ renpy.pause(0.1)
-
-#     $ result = crimescene_result
-#     # hide screen crimescene_overlay
-
-#     if result == "knife":
-#         call click_knife
-#     elif result == "canvas":
-#         call click_canvas
-#     elif result == "laptop":
-#         call click_laptop
-#     elif result == "letters":
-#         call click_letters
-#     elif result == "stool":
-#         call click_stool
-#     elif result == "table":
-#         call click_table
-#     elif result == "drawer":
-#         call click_drawer
-
-#     jump investigation_loop
 
 label go_to_scene():
-    # s "We're at the crime scene now."
+    play music "background_music.mp3" volume 0.8
     jump crimescene
-    # return
 
 label finish_investigation:
     $ hide_all_inventory()
-    scene black
+    scene outside_room
     show nina talk at right
     s "Good work, investigator!\nYou've collected all the evidence."
     return
-
-label click_laptop:
-    $ default_mouse = "default"
-    hide screen casefile_physical
-    hide screen casefile_photos
-    call screen inspect_laptop
-
-    # s "It seems his laptop has been left open, let's take a look at the messages. (click)"
-
-    # window hide
-    # $ renpy.pause(hard=True)
-
-label click_letters:
-    $ default_mouse = "default"
-    hide screen casefile_physical
-    hide screen casefile_photos
-    call screen inspect_letters
-    
-    # s "Letters from someone named 'Emily'? I wonder why he has them on his wall."
-    
-    # window hide
-    # $ renpy.pause(hard=True)
-
-label click_drawer:
-    $ default_mouse = "default"
-    hide screen casefile_physical
-    hide screen casefile_photos
-    call screen inspect_drawer
-
-    # s "A drawer, it looks like there's a shrine of someone, and some dead roses?"
-
-    # window hide
-    # $ renpy.pause(hard=True)
-
 
 transform half_size:
     zoom 0.5

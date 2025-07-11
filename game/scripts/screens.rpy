@@ -309,7 +309,7 @@ style quick_button_text:
 screen navigation():
 
     if main_menu:
-        textbutton _("Play") xalign 0.5 yalign 0.85 action Start() style "start_button"
+        textbutton _("Play") xalign 0.5 yalign 0.63 action Start() style "start_button"
 
     vbox:
         style_prefix "navigation"
@@ -363,7 +363,8 @@ style navigation_button_text:
     # xalign 0.5
 
 style start_button_text:
-    size 60
+    font "gui/fonts/title.otf"
+    size 70
 
 
 ## Main Menu screen ############################################################

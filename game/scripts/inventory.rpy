@@ -21,116 +21,123 @@ GENERAL NOTES:
 init python:
     # LEVEL-SPECIFIC FUNCTIONS -------------------------------------
     def hide_all_inventory():
-        renpy.hide_screen("full_inventory")
-        renpy.hide_screen("inventory")
-        renpy.hide_screen("toolbox")
-        renpy.hide_screen("inv_buttons")
-        renpy.hide_screen("close_inv")
-        renpy.hide_screen("toolboxpop")
-        renpy.hide_screen("inventoryItemMenu")
-        renpy.hide_screen("toolboxItemMenu")
-        renpy.hide_screen("toolboxPopItemMenu")
-        renpy.hide_screen("inspectItem")
+        screens = [
+            "full_inventory", "inventory", "toolbox", "inv_buttons", "close_inv",
+            "toolboxpop", "inventoryItemMenu", "toolboxItemMenu",
+            "toolboxPopItemMenu", "inspectItem"
+        ]
+        for scr in screens:
+            renpy.hide_screen(scr)
+
+    def jump_if_analyzing(options, label):
+        for key in options:
+            if analyzing.get(key):
+                renpy.jump(label)
+                break
 
     def toolbox_actions(item: str) -> None:
-        global tools
-        global analyzing
-        global default_mouse
-        
-        # Fingerprint and handprint ------------------------------
+        global tools, analyzing, default_mouse
+
+        # --- FINGERPRINT & HANDPRINT TOOLS ---
         if item == "uv_light" and tools["uv light"]:
             tools["uv light"] = False
             hide_all_inventory()
             renpy.show_screen("dark_overlay_with_mouse")
+
         elif item == "magnetic_powder" and tools["magnetic powder"]:
             tools["magnetic powder"] = False
+            tools["scalebar"] = True
             hide_all_inventory()
-            if analyzing["knife"]: # analyzing fingerprint
-                tools["scalebar"] = True
-                renpy.jump("fingerprint_dusted")
+            renpy.jump("fingerprint_dusted")
+
         elif item == "silver_granular_powder" and tools["silver granular powder"]:
             tools["silver granular powder"] = False
+            tools["scalebar"] = True
             hide_all_inventory()
-            if analyzing["knife"]: # analyzing fingerprint
-                tools["scalebar"] = True
-                renpy.jump("fingerprint_dusted")
+            renpy.jump("fingerprint_dusted")
+
         elif item == "scalebar" and tools["scalebar"]:
             tools["scalebar"] = False
-            hide_all_inventory()
             tools["tape"] = True
-            if analyzing["knife"]:
-                renpy.jump("fingerprint_scalebar")
-            else:
-                renpy.jump("fingerprint_scalebar")
+            hide_all_inventory()
+            renpy.jump("fingerprint_scalebar")
+
         elif item == "tape" and tools["tape"]:
             tools["tape"] = False
-            hide_all_inventory()
             tools["backing"] = True
+            hide_all_inventory()
             renpy.jump("fingerprint_taped")
+
         elif item == "backing_card" and tools["backing"]:
             tools["backing"] = False
-            hide_all_inventory()
             tools["packaging"] = True
-            if analyzing["knife"]:
-                renpy.jump("fingerprint_backing")
-        # elif item == "gel_lifter" and tools["gel lifter"]:
-        #     tools["gel lifter"] = False
-        #     hide_all_inventory()
-        #     tools["packaging"] = True
-        #     renpy.jump("handprint_gel")
-        # Splatter ------------------------------
+            hide_all_inventory()
+            renpy.jump("fingerprint_backing")
+
+        # --- BLOOD / SWAB TOOLS ---
         elif item == "swab_pack" and tools["swab"]:
-            # default_mouse = "ethanol"
             tools["swab"] = False
             hide_all_inventory()
-            if analyzing["canvas"]:
+            if analyzing.get("canvas"):
                 renpy.jump("canvas_swab")
-            elif analyzing["knife"]:
+            elif analyzing.get("knife"):
                 renpy.jump("knife_swab")
-            elif analyzing["table"]:
+            elif analyzing.get("table"):
                 renpy.jump("table_swab")
-            elif analyzing["stool"]:
+            elif analyzing.get("stool"):
                 renpy.jump("stool_swab")
-        # Presumptive test -----------------------------------
+
+        # --- PRESUMPTIVE TEST DROPPERS ---
         elif item == "ethanol":
             default_mouse = "ethanol"
             hide_all_inventory()
+
         elif item == "reagent":
             default_mouse = "reagent"
             hide_all_inventory()
+
         elif item == "hydrogen_peroxide":
             default_mouse = "hydrogen"
             hide_all_inventory()
-        # Packaging -------------------------------------------
+
+        # --- PACKAGING TOOLS ---
         elif item == "evidence_bag":
             if tools["packaging"]:
                 tools["packaging"] = False
-                hide_all_inventory()
                 tools["tamper evident tape"] = True
                 tools["bag"] = True
-                renpy.jump("packaging_1")
+                hide_all_inventory()
+                if analyzing.get("folder") or analyzing.get("letters"):
+                    renpy.jump("psych_packaging_1")
+                else:
+                    renpy.jump("packaging_1")
             elif tools["bag"]:
                 tools["tube"] = False
                 tools["bag"] = False
-                hide_all_inventory()
                 tools["tamper evident tape"] = True
-                if analyzing["knife fingerprint"] or analyzing["knife fingerprint alt"]:
+                hide_all_inventory()
+                if analyzing.get("knife fingerprint") or analyzing.get("knife fingerprint alt"):
                     renpy.jump("packaging_1")
-                elif analyzing["stool"] or analyzing["canvas"] or analyzing["knife"] or analyzing["table"]:
-                    renpy.jump("splatter_packaging_1")
+                elif analyzing.get("folder") or analyzing.get("letters"):
+                    renpy.jump("psych_packaging_1")
+                else:
+                    jump_if_analyzing(["stool", "canvas", "knife", "table"], "splatter_packaging_1")
+
         elif item == "tube" and tools["tube"]:
             tools["tube"] = False
-            hide_all_inventory()
             tools["bag"] = True
-            if analyzing["stool"] or analyzing["canvas"] or analyzing["knife"] or analyzing["table"]:
-                renpy.jump("splatter_packaging_0")
+            hide_all_inventory()
+            jump_if_analyzing(["stool", "canvas", "knife", "table"], "splatter_packaging_0")
+
         elif item == "tamper_evident_tape" and tools["tamper evident tape"]:
             tools["tamper evident tape"] = False
             hide_all_inventory()
-            if analyzing["knife fingerprint"] or analyzing["knife fingerprint alt"]:
+            if analyzing.get("knife fingerprint") or analyzing.get("knife fingerprint alt"):
                 renpy.jump("packaging_2")
-            elif analyzing["stool"] or analyzing["canvas"] or analyzing["knife"] or analyzing["table"]:
-                renpy.jump("splatter_packaging_2")               
+            elif analyzing.get("folder") or analyzing.get("letters"):
+                renpy.jump("psych_packaging_2")
+            else:
+                jump_if_analyzing(["stool", "canvas", "knife", "table"], "splatter_packaging_2")
 
     def inventory_actions(item: str) -> None:
         global location
