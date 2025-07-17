@@ -224,6 +224,8 @@ label start:
     jump begin
 
 label begin:
+    scene news
+    Dissolve(0.5)
     scene outside_room
     show nina normal at right
     voice "line1.mp3"
