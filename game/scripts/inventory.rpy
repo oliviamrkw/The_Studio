@@ -38,7 +38,7 @@ init python:
     def toolbox_actions(item: str) -> None:
         global tools, analyzing, default_mouse
 
-        # --- FINGERPRINT & HANDPRINT TOOLS ---
+        # --- FINGERPRINT & HANDPRINT TOOLS --- 
         if item == "uv_light" and tools["uv light"]:
             tools["uv light"] = False
             hide_all_inventory()
@@ -76,6 +76,11 @@ init python:
 
         # --- BLOOD / SWAB TOOLS ---
         elif item == "swab_pack" and tools["swab"]:
+            renpy.notify("test")
+            if tools["gloves"] == False:
+                renpy.pause(5.0)
+                renpy.say(s, "You need to swap gloves first.")
+                renpy.notify("-10 points")
             tools["swab"] = False
             hide_all_inventory()
             if analyzing.get("canvas"):
@@ -138,6 +143,10 @@ init python:
                 renpy.jump("psych_packaging_2")
             else:
                 jump_if_analyzing(["stool", "canvas", "knife", "table"], "splatter_packaging_2")
+
+        elif item == "gloves":
+            tools["gloves"] = True
+            renpy.call_in_new_context("_glove_animation")
 
     def inventory_actions(item: str) -> None:
         global location
@@ -1216,39 +1225,75 @@ screen inspectItem(items):
                 image "Toolbox Items/toolbox-{}.png".format(items[0]) align (0.5, 0.5) at Transform(zoom=1.5)
             # text "{}".format(items[0]) align (0.5, 0.67)
 
-"""
-Displays dialogue box.
-"""
-screen characterSay(who = None, what = None, jump_to = None):
-    modal True
-    zorder 6
-    style_prefix "say"
+# """
+# Displays dialogue box.
+# """
+# screen characterSay(who = None, what = None, jump_to = None):
+#     modal True
+#     zorder 6
+#     style_prefix "say"
 
-    window:
-        id "window"
-        window:
-            padding (20, 20)
-            id "namebox"
-            style "namebox"
-            if who is not None:
-                text who id "who"
-            else:
-                text dialogue["who"]
+#     window:
+#         id "window"
+#         window:
+#             padding (20, 20)
+#             id "namebox"
+#             style "namebox"
+#             if who is not None:
+#                 text who id "who"
+#             else:
+#                 text dialogue["who"]
 
-        if what is not None:
-            text what id "what" xpos 0.25 ypos 0.4 xanchor 0.0
-        else:
-            text dialogue["what"][0] xpos 0.3 ypos 0.1 xanchor 0.0
-    if what is None:
-        key "K_SPACE" action If(len(dialogue["what"]) > 1, true= RemoveFromSet(dialogue["what"], dialogue["what"][0]), false= [Hide("characterSay"), SetVariable("dialogue", {}), If(jump_to is not None, true = Jump("{}".format(jump_to)), false = NullAction())])
-    else:
-        key "K_SPACE"action [Return(True), If(jump_to is not None, true = Jump("{}".format(jump_to)), false = NullAction())]
+#         if what is not None:
+#             text what id "what" xpos 0.25 ypos 0.4 xanchor 0.0
+#         else:
+#             text dialogue["what"][0] xpos 0.3 ypos 0.1 xanchor 0.0
+#     if what is None:
+#         key "K_SPACE" action If(len(dialogue["what"]) > 1, true= RemoveFromSet(dialogue["what"], dialogue["what"][0]), false= [Hide("characterSay"), SetVariable("dialogue", {}), If(jump_to is not None, true = Jump("{}".format(jump_to)), false = NullAction())])
+#     else:
+#         key "K_SPACE"action [Return(True), If(jump_to is not None, true = Jump("{}".format(jump_to)), false = NullAction())]
 
 
-    ## If there's a side image, display it above the text. Do not display on the
-    ## phone variant - there's no room.
-    if not renpy.variant("small"):
-        add SideImage() xalign 0.0 yalign 1.0
+#     ## If there's a side image, display it above the text. Do not display on the
+#     ## phone variant - there's no room.
+#     if not renpy.variant("small"):
+#         add SideImage() xalign 0.0 yalign 1.0
 
-screen scene1:
-    add environment_SM
+# screen scene1:
+#     add environment_SM
+
+transform slide_up:
+    # start off‐screen below, 100% across
+    xalign 0.5
+    yalign 1.8
+    zoom 1.0
+    # slide into 100% across, 50% down over 2s
+    linear 0.5 xalign 0.5 yalign 1.1
+
+transform slide_down:
+    # stay at 100% across, 50% down at start
+    xalign 0.5
+    yalign 1.1
+    zoom 1.0
+    # slide off‐screen below over 2s
+    linear 1.0 xalign 0.5 yalign 1.8
+
+label _glove_animation:
+    # 1) bare hands slide up
+    show hands at slide_up
+    with None
+    pause 0.5
+
+    # 2) swap to gloved hands mid‐screen
+    hide hands with None
+    #show gloved_hands at slide_up
+    #with None
+    #pause 1
+
+    # 3) glide gloved hands back down
+    show gloved_hands at slide_down
+    with None
+    pause 0.5
+
+    hide gloved_hands
+    return

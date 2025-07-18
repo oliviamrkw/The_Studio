@@ -1,6 +1,19 @@
 """
 This file contains all labels and functions related to the blood analysis
 """
+init python:
+    def add_toolbox_blood_items():
+        """Adds necessary blood collection items to inventory.
+        """
+        tools["swab"] = True
+        tools["gloves"] = True
+        if "swab_pack" not in toolbox_items:
+            addToToolbox(["swab_pack"])
+        addToToolbox(["gloves"])
+
+    # def add_toolbox_print_items():
+    #     """Adds necessary fingerprint collection items to inventory.
+    #     """
 
 label click_canvas:
     $ default_mouse = "default"
@@ -20,10 +33,7 @@ label click_canvas:
         $ encountered["canvas"] = True
         "New photo added to evidence."
 
-    $ tools["swab"] = True
-
-    if "swab_pack" not in toolbox_items:
-        $ addToToolbox(["swab_pack"])
+    $ add_toolbox_blood_items()
     call screen toolbox
 
 label click_stool:
@@ -43,10 +53,7 @@ label click_stool:
         $ encountered["stool"] = True
         "New photo added to evidence."    
 
-    $ tools["swab"] = True
-
-    if "swab_pack" not in toolbox_items:
-        $ addToToolbox(["swab_pack"])
+    $ add_toolbox_blood_items()
     call screen toolbox
 
 label click_knife:
@@ -66,14 +73,12 @@ label click_knife:
     if encountered["knife"] == False:
         $ encountered["knife"] = True
         "New photo added to evidence."
-    
-    $ tools["swab"] = True
 
     if not (analyzed["knife presumptive"] and analyzed["knife packaged"]):
-        if "swab_pack" not in toolbox_items:
-            $ addToToolbox(["swab_pack"])
+        $ add_toolbox_blood_items()
     if not (analyzed["knife fingerprint"] and analyzed["knife fingerprint alt"] and analyzed["knife fingerprint packaged"]):
         $ addToToolbox(["uv_light", "magnetic_powder", "silver_granular_powder", "scalebar", "tape", "backing_card", "gel_lifter"])
+        $ addToToolbox(["gloves"])
     call screen toolbox
 
 label click_table:
@@ -93,10 +98,7 @@ label click_table:
         $ encountered["table"] = True
         "New photo added to evidence."
 
-    $ tools["swab"] = True
-
-    if "swab_pack" not in toolbox_items:
-        $ addToToolbox(["swab_pack"])
+    $ add_toolbox_blood_items()
     call screen toolbox
 
 label canvas_swab:
