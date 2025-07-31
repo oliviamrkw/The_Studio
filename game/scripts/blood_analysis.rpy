@@ -201,7 +201,7 @@ label sample:
         "Run a presumptive test":
             hide red swab
             show screen bloody_swab
-            $ remove_tools_from_toolbox(["swab_pack", "uv_light", "magnetic_powder", "silver_granular_powder", "scalebar", "tape", "backing_card", "gel_lifter"])
+            $ remove_tools_from_toolbox(["swab_pack", "uv_light", "magnetic_powder", "silver_granular_powder", "scalebar", "tape", "backing_card", "gel_lifter", "gloves"])
             $ addToToolbox(["ethanol", "reagent", "hydrogen_peroxide"])
             call screen toolbox
 
@@ -242,7 +242,7 @@ label presumptive:
         hide red swab
         $ player_kastle_meyer_order = []
         
-        $ remove_tools_from_toolbox(["ethanol", "reagent", "hydrogen_peroxide"])
+        $ remove_tools_from_toolbox(["ethanol", "reagent", "hydrogen_peroxide", "gloves"])
 
         hide screen toolbox_presumptive
 
@@ -264,7 +264,7 @@ label presumptive:
         $ update_progress()
 
         $ player_kastle_meyer_order = []
-        $ remove_tools_from_toolbox(["ethanol", "reagent", "hydrogen_peroxide"])
+        $ remove_tools_from_toolbox(["ethanol", "reagent", "hydrogen_peroxide", "gloves"])
         
     else:
         show screen bloody_swab
@@ -272,7 +272,7 @@ label presumptive:
 
 # Splatter packaging
 label splatter_alt:
-    $ remove_tools_from_toolbox(["swab_pack", "uv_light", "magnetic_powder", "silver_granular_powder", "scalebar", "tape", "backing_card", "gel_lifter"])   
+    $ remove_tools_from_toolbox(["swab_pack", "uv_light", "magnetic_powder", "silver_granular_powder", "scalebar", "tape", "backing_card", "gel_lifter", "gloves"])   
     $ addToToolbox(["evidence_bag", "tube", "tamper_evident_tape"])
     if analyzing["stool"]:
         scene inspect_stool
@@ -305,7 +305,7 @@ label splatter_packaging_2:
     call screen tape_to_bag
 
 label splatter_packaging_3:
-    $ remove_tools_from_toolbox(["evidence_bag", "tube", "tamper_evident_tape"])
+    $ remove_tools_from_toolbox(["evidence_bag", "tube", "tamper_evident_tape", "gloves"])
 
     show casefile_evidence_idle at Transform(xpos=0.3, ypos=0.24)
     "The blood sample has been added to your evidence."

@@ -2,9 +2,13 @@
 errors listed below, and try again.
 
 
-File "game/scripts/custom_screens.rpy", line 458: 'half_size' is not a keyword argument or valid child of the transform statement.
-    transform half_size
-                       ^
+File "game/scripts/script.rpy", line 228: expected statement.
+    Dissolve(0.5)
+                 ^
+
+File "game/scripts/script.rpy", line 230: expected statement.
+    Dissolve(0.5)
+                 ^
 
 Ren'Py Version: Ren'Py 8.3.7.25031702
-Thu Jul 10 16:25:42 2025
+Thu Jul 17 14:01:42 2025

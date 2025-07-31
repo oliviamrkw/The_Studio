@@ -225,26 +225,26 @@ label start:
     jump begin
 
 label begin:
-    # scene news
-    # with Dissolve(0.5)
-    # scene outside_room
-    # show nina normal at right
-    # voice "line1.mp3"
-    # s "Good evening, investigator."
-    # show nina talk at right
-    # voice "line2.mp3"
-    # s "We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment."
-    # show nina write at right
-    # voice "line3.mp3"
-    # s "His neighbours claim to have heard a heated argument at around 6pm with a woman, Emily Exgirlfriend, and went to check up on him later at 10pm, only to find him dead."
-    # voice "line4.mp3"
-    # s "There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit."
-    # show nina think at right
-    # voice "line5.mp3"
-    # s "We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene."
-    # show nina normal at right
-    # voice "line6.mp3"
-    # s "You may enter whenever you’re ready."
+    scene news
+    with Dissolve(1.5)
+    scene outside_room
+    show nina normal at right
+    voice "line1.mp3"
+    s "Good evening, investigator."
+    show nina talk at right
+    voice "line2.mp3"
+    s "We received a call earlier regarding the famous painter, Peter Painter, who was found dead in his studio apartment."
+    show nina write at right
+    voice "line3.mp3"
+    s "His neighbours claim to have heard a heated argument at around 6pm with a woman, Emily Exgirlfriend, and went to check up on him later at 10pm, only to find him dead."
+    voice "line4.mp3"
+    s "There was a knife found in his chest, and his body appeared to have several cuts on the arms, he bled quite a bit."
+    show nina think at right
+    voice "line5.mp3"
+    s "We’re not sure of the motive behind this death, so we need you to be thorough. I’ll give you a fair warning, investigator, there is quite a bit of blood on this scene."
+    show nina normal at right
+    voice "line6.mp3"
+    s "You may enter whenever you’re ready."
 
     call screen outside_room
 
