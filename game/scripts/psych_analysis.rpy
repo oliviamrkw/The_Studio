@@ -2,9 +2,11 @@
 This file has all labels and functions related to psychology-related evidence.
 """
 label click_folder:
+    $ remove_toolbox_items()
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
+    hide screen notebook_screen
     call screen show_document
     scene inspect_folder
 
@@ -22,12 +24,15 @@ label click_laptop:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
+    hide screen notebook_screen
     call screen inspect_laptop
 
 label click_letters:
+    $ remove_toolbox_items()
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
+    hide screen notebook_screen
 
     if analyzed["letters"]:
         scene no_letters
@@ -43,9 +48,11 @@ label click_letters:
     call screen toolbox
 
 label click_drawer:
+    $ remove_toolbox_items()
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
+    hide screen notebook_screen
     call screen inspect_drawer
 
 label psych_packaging_1:
@@ -72,15 +79,16 @@ label psych_packaging_3:
     if analyzing["folder"]:
         $ analyzing["folder"] = False
         $ analyzed["folder"] = True
+        $ tasks["Package the folder"] = True
         $ addToInventory(["folder"])
     elif analyzing["letters"]:
         $ analyzing["letters"] = False
         $ analyzed["letters"] = True
+        $ tasks["Package the letters"] = True
         $ addToInventory(["letters"])
     $ update_progress()
 
     hide casefile_evidence_idle
 
-    python:
-        remove_tools_from_toolbox(["evidence_bag", "tube", "tamper_evident_tape"])
+    $ remove_toolbox_items()
     jump crimescene

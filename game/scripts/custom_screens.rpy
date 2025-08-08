@@ -2,6 +2,37 @@
 # #This file contains all custom screens used in the game.
 # # 
 
+screen notebook():
+    zorder 100
+    imagebutton:
+        idle (Animation("images/ui/notebook_icon.png", 0.5, "images/ui/notebook_icon_hover.png", 0.5) if not notebook_clicked else "images/ui/notebook_icon.png")
+        hover "images/ui/notebook_icon_hover.png"
+        xpos 1830 ypos 20
+        at Transform(zoom=0.15)
+        action [Function(toggle_notebook), SetVariable("notebook_clicked", True)]
+
+screen notebook_screen():
+    zorder 100
+    frame:
+        xalign 1.02
+        yalign 0.02
+        xsize 590
+        ysize 300
+        xpadding 10
+        ypadding 20
+        background "images/ui/notebook_paper.png"
+
+        vbox:
+            spacing 10
+            label " " style "heading_text"
+
+            for i, task in enumerate(tasks, 1):
+                if tasks[task]:
+                    text f"{i}. {task}" style "strikethrough_text"
+                else:
+                    text f"{i}. {task}" style "instructions_text"
+
+
 screen ui():
     # This is the case file displayed on the top left corner of the screen when the player is in the corridor.
     zorder 2
@@ -351,31 +382,36 @@ screen outside_room():
         ypos 125
         action [Hide("outside_room"), Jump("go_to_scene")]
 
-screen inspect_canvas():
-    add "images/backgrounds/inspect_canvas.png" xpos 700 ypos 50
+screen back_button():
+    zorder 100
     textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")
 
-screen inspect_knife():
-    add "images/backgrounds/inspect_knife.png" xpos 600 ypos 200
-    textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")
+# screen inspect_canvas():
+#     add "images/backgrounds/inspect_canvas.png" xpos 700 ypos 50
+#     textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")
 
-screen inspect_table():
-    add "images/backgrounds/inspect_table.png" xpos 600 ypos 200
-    textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")
+# screen inspect_knife():
+#     add "images/backgrounds/inspect_knife.png" xpos 600 ypos 200
+#     textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")
 
-screen inspect_letters():
-    add "images/backgrounds/inspect_letters.png" xpos 10 ypos 10
-    textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")
+# screen inspect_table():
+#     add "images/backgrounds/inspect_table.png" xpos 600 ypos 200
+#     textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")
 
-screen inspect_stool():
-    add "images/backgrounds/inspect_stool.png" xpos 600 ypos 500
-    textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")
+# screen inspect_letters():
+#     add "images/backgrounds/inspect_letters.png" xpos 10 ypos 10
+#     textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")
+
+# screen inspect_stool():
+#     add "images/backgrounds/inspect_stool.png" xpos 600 ypos 500
+#     textbutton "Back" xpos 1800 ypos 1000 action Jump("crimescene")
 
 # Interactibles  -------------------------------------------------------------------------------------------
 
 default current_tab = "emily"
 
 screen inspect_laptop():
+    $ tasks["Inspect the computer"] = True
     $ default_mouse = "cursor"
     add "images/backgrounds/inspect_laptop.png" 
 
@@ -430,7 +466,7 @@ screen inspect_folder():
 
 screen progress_counter():
     frame:
-        xalign 1.0
+        xalign 0.0
         yalign 0.02
         padding (10, 5)
         background "#0008"

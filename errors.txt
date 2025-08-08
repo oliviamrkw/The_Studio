@@ -2,13 +2,13 @@
 errors listed below, and try again.
 
 
-File "game/scripts/script.rpy", line 228: expected statement.
-    Dissolve(0.5)
-                 ^
+File "game/scripts/psych_analysis.rpy", line 75: cannot assign to literal
+    tasks = ["Package the folders"] = True
+              ^
 
-File "game/scripts/script.rpy", line 230: expected statement.
-    Dissolve(0.5)
-                 ^
+File "game/scripts/psych_analysis.rpy", line 80: cannot assign to literal
+    tasks = ["Package the letters"] = True
+              ^
 
 Ren'Py Version: Ren'Py 8.3.7.25031702
-Thu Jul 17 14:01:42 2025
+Mon Aug  4 17:15:15 2025

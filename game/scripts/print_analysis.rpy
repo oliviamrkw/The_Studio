@@ -75,8 +75,7 @@ label packaging:
     if analyzing["knife"]:
         show backing fingerprint at Transform(xpos=0.3, ypos=0.2, zoom=1.6)
     
-    python:
-        remove_tools_from_toolbox(["evidence_bag", "tube", "tamper_evident_tape", "uv_light", "magnetic_powder", "silver granular powder", "scalebar", "tape", "backing_card", "gel_lifter"])
+    $ remove_toolbox_items()
     call screen toolbox
 
 label packaging_1:
@@ -99,15 +98,25 @@ label packaging_3:
     if analyzing["knife fingerprint"]:
         $ analyzed["knife fingerprint"] = True
         $ analyzing["knife fingerprint"] = False
+        if not analyzed["knife fingerprint alt"]:
+            $ custom_notify("Analyzed first fingerprint!", True)
+        else:
+            $ custom_notify("Analyzed second fingerprint!", True)
+
     elif analyzing["knife fingerprint alt"]:
         $ analyzed["knife fingerprint alt"] = True
         $ analyzing["knife fingerprint alt"] = False
+        if not analyzed["knife fingerprint"]:
+            $ custom_notify("Analyzed first fingerprint!", True)
+        else:
+            $ custom_notify("Analyzed second fingerprint!", True)
+    if analyzed["knife fingerprint"] and analyzed["knife fingerprint alt"]:
+        $ tasks["Analyze the fingerprints (2) on the knife"] = True
     $ analyzing["knife"] = False
     $ update_progress()
     $ addToInventory(["fingerprint"])
 
     hide casefile_evidence_idle
 
-    python:
-        remove_tools_from_toolbox(["evidence_bag", "tube", "tamper_evident_tape"])
+    $ remove_toolbox_items()
     jump crimescene

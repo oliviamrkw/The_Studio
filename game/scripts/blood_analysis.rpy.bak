@@ -7,8 +7,9 @@ init python:
         """
         tools["swab"] = True
         tools["gloves"] = True
-        addToToolbox(["swab_pack"])
-        # addToToolbox(["gloves"])
+        if "swab_pack" not in toolbox_items:
+            addToToolbox(["swab_pack"])
+        addToToolbox(["gloves"])
 
     # def add_toolbox_print_items():
     #     """Adds necessary fingerprint collection items to inventory.
@@ -18,14 +19,13 @@ label click_canvas:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
-    hide screen notebook_screen
-    scene inspect_canvas
-    show screen back_button
 
-    if analyzed["canvas presumptive"]:
+    scene inspect_canvas
+
+    if analyzed["canvas"] and analyzed["canvas presumptive"]:
         $ analyzing["canvas"] = False
-        s "You've already inspected the canvas."
-        call crimescene from _call_crimescene
+        s normal "You've already inspected the canvas."
+        call crimescene
     
     $ analyzing["canvas"] = True
 
@@ -33,23 +33,19 @@ label click_canvas:
         $ encountered["canvas"] = True
         "New photo added to evidence."
 
-    $ remove_toolbox_items()
     $ add_toolbox_blood_items()
     call screen toolbox
-    hide screen notebook_screen
 
 label click_stool:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
-    hide screen notebook_screen
     scene inspect_stool
-    show screen back_button
 
-    if analyzed["splatter presumptive"]:
+    if analyzed["splatter"] and analyzed["splatter presumptive"] and analyzed["splatter packaged"]:
         $ analyzing["stool"] = False
         s normal3 "You've finished analyzing the splatter."
-        call crimescene from _call_crimescene_1
+        call crimescene
 
     $ analyzing["stool"] = True
 
@@ -57,23 +53,19 @@ label click_stool:
         $ encountered["stool"] = True
         "New photo added to evidence."    
 
-    $ remove_toolbox_items()
     $ add_toolbox_blood_items()
     call screen toolbox
-    hide screen notebook_screen
 
 label click_knife:
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
-    hide screen notebook_screen
     scene inspect_knife
-    show screen back_button
 
-    if analyzed["knife presumptive"] and analyzed["knife fingerprint"] and analyzed["knife fingerprint alt"] :
+    if analyzed["knife presumptive"] and analyzed["knife packaged"] and analyzed["knife fingerprint"]:
         $ analyzing["knife"] = False
         s "You've already inspected the knife"
-        call crimescene from _call_crimescene_2
+        call crimescene
 
     $ analyzing["knife"] = True
     $ tools["uv light"] = True
@@ -82,28 +74,23 @@ label click_knife:
         $ encountered["knife"] = True
         "New photo added to evidence."
 
-    $ addToToolbox(["swab_pack"])
-    if not analyzed["knife presumptive"]:
+    if not (analyzed["knife presumptive"] and analyzed["knife packaged"]):
         $ add_toolbox_blood_items()
-    if not (analyzed["knife fingerprint"] and analyzed["knife fingerprint alt"]):
-        $ remove_toolbox_items()
+    if not (analyzed["knife fingerprint"] and analyzed["knife fingerprint alt"] and analyzed["knife fingerprint packaged"]):
         $ addToToolbox(["uv_light", "magnetic_powder", "silver_granular_powder", "scalebar", "tape", "backing_card", "gel_lifter"])
+        $ addToToolbox(["gloves"])
     call screen toolbox
-    hide screen notebook_screen
 
 label click_table:
-    $ remove_toolbox_items()
     $ default_mouse = "default"
     hide screen casefile_physical
     hide screen casefile_photos
-    hide screen notebook_screen
     scene inspect_table
-    show screen back_button
 
-    if analyzed["table presumptive"]:
+    if analyzed["table presumptive"] and analyzed["table packaged"]:
         $ analyzing["table"] = False
         s normal2 "You've already inspected the table"
-        call crimescene from _call_crimescene_3
+        call crimescene
 
     $ analyzing["table"] = True
 
@@ -111,13 +98,10 @@ label click_table:
         $ encountered["table"] = True
         "New photo added to evidence."
 
-    $ remove_toolbox_items()
     $ add_toolbox_blood_items()
     call screen toolbox
-    hide screen notebook_screen
 
 label canvas_swab:
-    $ remove_toolbox_items()
     scene inspect_canvas
     if asked["canvas_swab"]:
         show red swab at Transform(xpos=0.4, ypos=0.3)
@@ -141,7 +125,6 @@ label canvas_swab:
             jump sample
 
 label knife_swab:
-    $ remove_toolbox_items()
     scene inspect_knife
     if asked["knife_swab"]:
         show red swab at Transform(xpos=0.4, ypos=0.3)
@@ -211,10 +194,6 @@ label stool_swab:
             jump sample
 
 label sample:
-    $ remove_toolbox_items()
-    $ remove_tools_from_toolbox(["uv light", "magnetic powder", "silver granular powder",
-                            "scalebar", "gel lifter", "tape", "backing_card", "packaging",
-                            "tube", "bag", "tamper evident tape"])
     menu:
         "How would you like to proceed?"
         "Package the sample":
@@ -222,10 +201,7 @@ label sample:
         "Run a presumptive test":
             hide red swab
             show screen bloody_swab
-            $ remove_toolbox_items()
-            $ remove_tools_from_toolbox(["uv light", "magnetic powder", "silver granular powder",
-                                    "scalebar", "gel lifter", "tape", "backing_card", "packaging",
-                                    "tube", "bag", "tamper evident tape"])
+            $ remove_tools_from_toolbox(["swab_pack", "uv_light", "magnetic_powder", "silver_granular_powder", "scalebar", "tape", "backing_card", "gel_lifter", "gloves"])
             $ addToToolbox(["ethanol", "reagent", "hydrogen_peroxide"])
             call screen toolbox
 
@@ -266,7 +242,7 @@ label presumptive:
         hide red swab
         $ player_kastle_meyer_order = []
         
-        $ remove_toolbox_items()
+        $ remove_tools_from_toolbox(["ethanol", "reagent", "hydrogen_peroxide", "gloves"])
 
         hide screen toolbox_presumptive
 
@@ -274,12 +250,8 @@ label presumptive:
         hide screen toolbox_presumptive
         hide screen bloody_swab
         hide red swab
-        
-        if not analyzing["table"]:
-            show pink swab at Transform(xpos=0.4, ypos=0.3)
-            "The results of this test show that this substance appears to be blood."
-        else:
-            "The results of this test show that this substance does not appear to be blood."
+        show pink swab at Transform(xpos=0.4, ypos=0.3)
+        "The results of this test show that this substance is indeed blood."
 
         if analyzing["stool"]:
             $ analyzed["splatter presumptive"] = True
@@ -292,7 +264,7 @@ label presumptive:
         $ update_progress()
 
         $ player_kastle_meyer_order = []
-        $ remove_toolbox_items()
+        $ remove_tools_from_toolbox(["ethanol", "reagent", "hydrogen_peroxide", "gloves"])
         
     else:
         show screen bloody_swab
@@ -300,8 +272,7 @@ label presumptive:
 
 # Splatter packaging
 label splatter_alt:
-    $ remove_toolbox_items()
-    $ remove_tools_from_toolbox("ethanol, ")
+    $ remove_tools_from_toolbox(["swab_pack", "uv_light", "magnetic_powder", "silver_granular_powder", "scalebar", "tape", "backing_card", "gel_lifter", "gloves"])   
     $ addToToolbox(["evidence_bag", "tube", "tamper_evident_tape"])
     if analyzing["stool"]:
         scene inspect_stool
@@ -334,37 +305,29 @@ label splatter_packaging_2:
     call screen tape_to_bag
 
 label splatter_packaging_3:
-    $ remove_toolbox_items()
+    $ remove_tools_from_toolbox(["evidence_bag", "tube", "tamper_evident_tape", "gloves"])
 
     show casefile_evidence_idle at Transform(xpos=0.3, ypos=0.24)
     "The blood sample has been added to your evidence."
     if analyzing["stool"]:
         $ analyzing["stool"] = False
-        $ analyzed["splatter presumptive"] = True
-        $ tasks["Analyze the splatter by the stool"] = True
-        $ custom_notify("Analyzed stool splatter!", True)
+        $ analyzed["splatter packaged"] = True
         $ addToInventory(["splatter"])
         hide casefile_evidence_idle
     elif analyzing["canvas"]:
         $ analyzing["canvas"] = False
-        $ analyzed["canvas presumptive"] = True
-        $ tasks["Analyze the canvas"] = True
-        $ custom_notify("Analyzed canvas!", True)
+        $ analyzed["canvas packaged"] = True
         $ addToInventory(["splatter"])
         hide casefile_evidence_idle
     elif analyzing["knife"]:
         $ analyzing["knife"] = False
-        $ analyzed["knife presumptive"] = True
-        $ tasks["Analyze the blood on the knife"] = True
-        $ custom_notify("Analyzed the bloody knife!", True)
+        $ analyzed["knife packaged"] = True
         $ addToInventory(["splatter"])
         hide casefile_evidence_idle
     elif analyzing["table"]:
         $ analyzing["table"] = False
-        $ analyzed["table presumptive"] = True
-        $ tasks["Analyze the table"] = True
-        $ custom_notify("Analyzed the table!", True)
+        $ analyzed["table packaged"] = True
         $ addToInventory(["splatter"])
         hide casefile_evidence_idle
     $ update_progress()
-    call crimescene from _call_crimescene_4
+    call crimescene

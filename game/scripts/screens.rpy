@@ -1287,15 +1287,22 @@ style skip_triangle:
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#notify-screen
 
-screen notify(message):
+screen notify(message, correct):
 
     zorder 100
     style_prefix "notify"
 
     frame at notify_appear:
+        background Frame(
+            "gui/notify_action.png" if correct else "gui/notify.png",
+            gui.notify_frame_borders,
+            tile=gui.frame_tile
+        )
+        padding gui.notify_frame_borders.padding
+
         text "[message!tq]"
 
-    timer 3.25 action Hide('notify')
+    timer 1.5 action Hide('notify')
 
 
 transform notify_appear:

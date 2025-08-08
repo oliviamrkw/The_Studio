@@ -44,11 +44,12 @@ init python:
             hide_all_inventory()
             renpy.show_screen("dark_overlay_with_mouse")
 
-        elif item == "magnetic_powder" and tools["magnetic powder"]:
-            tools["magnetic powder"] = False
-            tools["scalebar"] = True
-            hide_all_inventory()
-            renpy.jump("fingerprint_dusted")
+        elif item == "magnetic_powder":
+            custom_notify("Wrong type of powder!", False)
+            # tools["magnetic powder"] = False
+            # tools["scalebar"] = True
+            # hide_all_inventory()
+            # renpy.jump("fingerprint_dusted")
 
         elif item == "silver_granular_powder" and tools["silver granular powder"]:
             tools["silver granular powder"] = False
@@ -76,11 +77,10 @@ init python:
 
         # --- BLOOD / SWAB TOOLS ---
         elif item == "swab_pack" and tools["swab"]:
-            renpy.notify("test")
-            if tools["gloves"] == False:
-                renpy.pause(5.0)
-                renpy.say(s, "You need to swap gloves first.")
-                renpy.notify("-10 points")
+            # if tools["gloves"] == False:
+            #     renpy.pause(5.0)
+            #     renpy.say(s, "You need to swap gloves first.")
+            #     renpy.notify("-10 points")
             tools["swab"] = False
             hide_all_inventory()
             if analyzing.get("canvas"):

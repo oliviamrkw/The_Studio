@@ -1,6 +1,18 @@
 ﻿define s = Character(name=("Nina"), image="nina")
+default notebook_clicked = False
 
 init python:
+    tasks = {
+        "Analyze the canvas": False,
+        "Analyze the splatter by the stool": False,
+        "Analyze the blood on the knife": False,
+        "Analyze the fingerprints (2) on the knife": False,
+        "Analyze the table": False,
+        "Inspect the computer": False,
+        "Package the folder": False,
+        "Package the letters": False
+    }
+
     # Defines all mouse cursors used in the game
     config.mouse = {
         "default": [("images/ui/cursors/cursor.png", 0, 0)],
@@ -48,17 +60,12 @@ init python:
 
     # Used to keep track of what evidence has been analyzed
     analyzed = {
-        "canvas": False,
         "canvas presumptive": False,
-        "canvas packaged": False,
-        "splatter": False,
         "splatter presumptive": False,
-        "splatter packaged": False,
         "knife fingerprint": False,
         "knife fingerprint alt": False,
         "knife presumptive": False,
         "table presumptive": False,
-        "table packaged": False,
         "folder": False,
         "letters": False
     }
@@ -143,7 +150,7 @@ init python:
             renpy.show_screen("casefile")
 
     def get_progress():
-        remaining = sum(1 for e in analyzed.values() if not e)
+        remaining = sum(1 for e in tasks.values() if not e)
         return remaining
 
     def update_progress():
@@ -155,6 +162,24 @@ init python:
         for item in tools_to_remove:
             if item in toolbox_items:
                 removeToolboxItem(toolbox_sprites[toolbox_items.index(item)])
+
+    def toggle_screen(name):
+        if renpy.get_screen(name):
+            renpy.hide_screen(name)
+        else:
+            renpy.show_screen(name)
+
+    def toggle_notebook():
+        toggle_screen("notebook_screen")
+
+    def remove_toolbox_items():
+        remove_tools_from_toolbox(["uv_light", "magnetic_powder", "silver_granular_powder",
+                                    "scalebar", "gel_lifter", "tape", "backing_card", "packaging",
+                                    "tube", "evidence_bag", "tamper_evident_tape", "swab_pack", "folder",
+                                    "letters", "gloves", "ethanol", "reagent", "hydrogen_peroxide"])
+
+    def custom_notify(msg, correct=True):
+        renpy.show_screen("notify", message=msg, correct=correct)
 
 label start:
     $ default_mouse = "magnifying"
@@ -226,7 +251,7 @@ label start:
 
 label begin:
     scene news
-    with Dissolve(1.5)
+    with Dissolve(2.5)
     scene outside_room
     show nina normal at right
     voice "line1.mp3"
@@ -268,10 +293,14 @@ label toolbox_init:
 
 label crimescene:
     scene room
+    if all(tasks.values()):
+        jump finish_investigation
     $ default_mouse = "magnifying"
     $ remaining_count = get_progress()
     show screen progress_counter
+    show screen notebook
     call screen crimescene
+    $ remove_toolbox_items()
 
 label go_to_scene():
     play music "background_music.mp3" volume 0.8
@@ -279,9 +308,10 @@ label go_to_scene():
 
 label finish_investigation:
     $ hide_all_inventory()
-    scene outside_room
+    scene room
     show nina talk at right
     s "Good work, investigator!\nYou've collected all the evidence."
+    s "Now, let's head to the lab!"
     return
 
 transform half_size:
